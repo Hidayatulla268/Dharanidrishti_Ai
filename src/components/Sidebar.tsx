@@ -13,7 +13,8 @@ import {
   BookOpen, 
   Trees, 
   Headphones,
-  ChevronRight
+  ChevronRight,
+  FileDown
 } from 'lucide-react';
 import { UserRole } from '../types';
 
@@ -249,6 +250,38 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </>
           )}
         </div>
+      </div>
+
+      {/* 1-Click Architecture PDF Whitepaper Download */}
+      <div style={{ padding: '0 14px 10px 14px' }}>
+        <a 
+          href="DharaniDrishti_AI_Complete_Architecture_and_Engineering_Manual.pdf" 
+          download="DharaniDrishti_AI_Complete_Architecture_and_Engineering_Manual.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '9px 12px',
+            background: 'linear-gradient(135deg, rgba(14, 165, 233, 0.12) 0%, rgba(99, 102, 241, 0.12) 100%)',
+            border: '1px solid rgba(14, 165, 233, 0.3)',
+            borderRadius: 'var(--radius-md)',
+            color: '#38bdf8',
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            textDecoration: 'none',
+            transition: 'all var(--transition-fast)'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <FileDown size={15} style={{ color: '#38bdf8' }} />
+            <span>Architecture PDF</span>
+          </div>
+          <span style={{ fontSize: '0.64rem', background: 'rgba(14, 165, 233, 0.25)', padding: '2px 6px', borderRadius: 'var(--radius-sm)', color: '#e0f2fe' }}>
+            MANUAL
+          </span>
+        </a>
       </div>
 
       {/* Bottom Help Box */}
