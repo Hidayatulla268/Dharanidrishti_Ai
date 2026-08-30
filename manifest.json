@@ -1,0 +1,23 @@
+{
+  "short_name": "DharaniDrishti",
+  "name": "DharaniDrishti AI - Land Acquisition Predictive Analytics",
+  "description": "Predictive Analytics & Decision Support System for Early Detection of Land Acquisition Delays (Problem Statement ID: 26017)",
+  "icons": [
+    {
+      "src": "/public/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512"
+    },
+    {
+      "src": "/public/icons.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#080c17",
+  "theme_color": "#080c17",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "categories": ["government", "productivity", "utilities"]
+}
