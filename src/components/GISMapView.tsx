@@ -38,7 +38,17 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
   onSelectProject,
   onNavigateToXai
 }) => {
-  const hasGoogleMaps = typeof window !== 'undefined' && !!(window as any).google?.maps;
+  const [isGoogleConnected, setIsGoogleConnected] = useState<boolean>(typeof window !== 'undefined' && !!(window as any).google?.maps);
+  const [apiKeyLoading, setApiKeyLoading] = useState<boolean>(false);
+  const [apiKeyError, setApiKeyError] = useState<string | null>(null);
+  const [savedKey, setSavedKey] = useState<string>(() => {
+    try {
+      return localStorage.getItem('DHARANI_GOOGLE_MAPS_KEY') || '';
+    } catch {
+      return '';
+    }
+  });
+
   const [mapProvider, setMapProvider] = useState<'GOOGLE_MAPS' | 'LEAFLET'>('LEAFLET');
   const [viewMode, setViewMode] = useState<MapViewMode>('VIBRANT');
   const [showTraffic, setShowTraffic] = useState<boolean>(false);
@@ -177,32 +187,77 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
   ];
 
   // Helper to dynamically load Google Maps at runtime safely
-  const loadGoogleMapsWithKey = (key: string) => {
+  const loadGoogleMapsWithKey = (key: string, showModalOnComplete: boolean = true) => {
     if (!key.trim()) return;
+    setApiKeyLoading(true);
+    setApiKeyError(null);
+
+    // If script already loaded and window.google.maps is ready
+    if ((window as any).google?.maps?.Map) {
+      setIsGoogleConnected(true);
+      setApiKeyLoading(false);
+      try { localStorage.setItem('DHARANI_GOOGLE_MAPS_KEY', key.trim()); } catch {}
+      setSavedKey(key.trim());
+      setMapProvider('GOOGLE_MAPS');
+      if (showModalOnComplete) setShowKeyModal(false);
+      return;
+    }
+
     try {
+      const scriptId = 'google-maps-script-loader';
+      const existingScript = document.getElementById(scriptId);
+      if (existingScript) existingScript.remove();
+
       const script = document.createElement('script');
+      script.id = scriptId;
       script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key.trim())}&libraries=places,geometry`;
       script.async = true;
       script.defer = true;
       script.onload = () => {
-        setShowKeyModal(false);
+        setIsGoogleConnected(true);
+        setApiKeyLoading(false);
+        try { localStorage.setItem('DHARANI_GOOGLE_MAPS_KEY', key.trim()); } catch {}
+        setSavedKey(key.trim());
         setMapProvider('GOOGLE_MAPS');
+        if (showModalOnComplete) setShowKeyModal(false);
       };
       script.onerror = () => {
-        alert('Failed to connect to Google Maps API with the provided key. Please check network/key validity.');
+        setApiKeyLoading(false);
+        setApiKeyError('Failed to connect to Google Maps servers. Check your network or API key format.');
       };
       document.head.appendChild(script);
     } catch (err) {
       console.error('Failed to append Google Maps script:', err);
+      setApiKeyLoading(false);
+      setApiKeyError('Failed to attach Google script loader.');
     }
+  };
+
+  const handleDisconnectGoogleKey = () => {
+    try { localStorage.removeItem('DHARANI_GOOGLE_MAPS_KEY'); } catch {}
+    setSavedKey('');
+    setCustomApiKey('');
+    setIsGoogleConnected(false);
+    setMapProvider('LEAFLET');
+    setShowKeyModal(false);
   };
 
   // Safe error handling for Google Maps auth failures
   useEffect(() => {
     (window as any).gm_authFailure = () => {
       console.warn('Google Maps API authentication failed. Automatically falling back to Leaflet GIS engine.');
+      setIsGoogleConnected(false);
+      setApiKeyError('Google Cloud Key rejected: Ensure Maps JavaScript API is enabled and HTTP referrer allows this domain in Google Cloud Console.');
       setMapProvider('LEAFLET');
     };
+  }, []);
+
+  // Auto-connect on mount if saved key exists
+  useEffect(() => {
+    const keyToLoad = savedKey || (import.meta as any).env?.VITE_GOOGLE_MAPS_API_KEY;
+    if (keyToLoad && !(window as any).google?.maps) {
+      loadGoogleMapsWithKey(keyToLoad, false);
+    }
   }, []);
 
   // Helper to destroy previous map instances
@@ -666,10 +721,20 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
             onClick={() => setShowKeyModal(true)}
             className="btn-secondary"
             title="Configure Google Maps API Key"
-            style={{ padding: '5px 10px', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '5px' }}
+            style={{ 
+              padding: '5px 12px', 
+              fontSize: '0.75rem', 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '6px',
+              borderColor: isGoogleConnected ? 'rgba(16, 185, 129, 0.4)' : 'var(--border-medium)',
+              background: isGoogleConnected ? 'rgba(16, 185, 129, 0.12)' : 'var(--bg-surface)'
+            }}
           >
-            <KeyRound size={13} style={{ color: hasGoogleMaps ? '#10b981' : 'var(--primary-400)' }} />
-            <span>{hasGoogleMaps ? 'Google Key Active' : 'Set Google Key'}</span>
+            <KeyRound size={13} style={{ color: isGoogleConnected ? '#10b981' : 'var(--primary-400)' }} />
+            <span style={{ color: isGoogleConnected ? '#34d399' : 'inherit', fontWeight: isGoogleConnected ? 700 : 500 }}>
+              {isGoogleConnected ? '🟢 Google Key Connected' : '🔑 Connect Google Key'}
+            </span>
           </button>
 
           {/* Universal View Mode Switcher (Satellite, Hybrid, Terrain, Vibrant, Dark) */}
@@ -950,52 +1015,111 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
               </div>
             </div>
 
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '16px' }}>
-              The platform runs with the built-in <strong>Leaflet High-Res CartoDB & Satellite Engine</strong> by default without any API key. If you have a Google Maps JavaScript API key, enter it below:
-            </p>
+            {/* Connection Status Panel */}
+            {isGoogleConnected ? (
+              <div style={{
+                background: 'rgba(16, 185, 129, 0.12)',
+                border: '1px solid rgba(16, 185, 129, 0.35)',
+                borderRadius: 'var(--radius-md)',
+                padding: '16px',
+                marginBottom: '16px'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#34d399', fontWeight: 800, fontSize: '0.9rem', marginBottom: '6px' }}>
+                  <Check size={18} /> Google Maps API Connected & Active!
+                </div>
+                <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: 1.4, margin: '0 0 12px 0' }}>
+                  Your Google Maps JavaScript SDK is connected. You can now use Google satellite, hybrid, and live traffic telemetry across the platform.
+                </p>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '0.72rem', fontFamily: 'monospace', color: 'var(--text-muted)' }}>
+                    {savedKey ? `${savedKey.slice(0, 8)}••••••••${savedKey.slice(-4)}` : 'Active Session Key'}
+                  </span>
+                  <button
+                    onClick={handleDisconnectGoogleKey}
+                    style={{
+                      padding: '5px 12px',
+                      background: 'rgba(239, 68, 68, 0.15)',
+                      border: '1px solid rgba(239, 68, 68, 0.4)',
+                      borderRadius: 'var(--radius-sm)',
+                      color: '#f87171',
+                      fontSize: '0.75rem',
+                      fontWeight: 700,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Disconnect Key
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '14px' }}>
+                  The platform runs with the built-in <strong>Leaflet High-Res CartoDB & Satellite Engine</strong> by default without requiring an API key. If you wish to connect your official Google Maps key, enter it below:
+                </p>
 
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '6px' }}>
-                GOOGLE MAPS API KEY (AIzaSy...)
-              </label>
-              <input
-                type="password"
-                value={customApiKey}
-                onChange={(e) => setCustomApiKey(e.target.value)}
-                placeholder="AIzaSy..."
-                style={{
-                  width: '100%',
-                  padding: '10px 14px',
-                  borderRadius: 'var(--radius-md)',
-                  background: 'var(--bg-surface)',
-                  border: '1px solid var(--border-medium)',
-                  color: 'var(--text-primary)',
-                  fontSize: '0.85rem',
-                  fontFamily: 'monospace'
-                }}
-              />
-            </div>
+                {apiKeyError && (
+                  <div style={{
+                    background: 'rgba(239, 68, 68, 0.12)',
+                    border: '1px solid rgba(239, 68, 68, 0.35)',
+                    borderRadius: 'var(--radius-md)',
+                    padding: '10px 12px',
+                    marginBottom: '14px',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '8px',
+                    color: '#f87171',
+                    fontSize: '0.75rem',
+                    lineHeight: 1.4
+                  }}>
+                    <AlertTriangle size={16} style={{ flexShrink: 0, marginTop: '2px' }} />
+                    <div>{apiKeyError}</div>
+                  </div>
+                )}
 
-            <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
-              <button
-                onClick={() => {
-                  setShowKeyModal(false);
-                  setMapProvider('LEAFLET');
-                }}
-                className="btn-secondary"
-                style={{ padding: '8px 16px', fontSize: '0.8rem' }}
-              >
-                Use Built-in Leaflet
-              </button>
-              <button
-                onClick={() => loadGoogleMapsWithKey(customApiKey)}
-                className="btn-primary"
-                disabled={!customApiKey.trim()}
-                style={{ padding: '8px 16px', fontSize: '0.8rem', opacity: customApiKey.trim() ? 1 : 0.5 }}
-              >
-                Apply & Connect
-              </button>
-            </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                    GOOGLE MAPS API KEY (AIzaSy...)
+                  </label>
+                  <input
+                    type="password"
+                    value={customApiKey}
+                    onChange={(e) => setCustomApiKey(e.target.value)}
+                    placeholder="AIzaSy..."
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      borderRadius: 'var(--radius-md)',
+                      background: 'var(--bg-surface)',
+                      border: '1px solid var(--border-medium)',
+                      color: 'var(--text-primary)',
+                      fontSize: '0.85rem',
+                      fontFamily: 'monospace'
+                    }}
+                  />
+                </div>
+
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                  <button
+                    onClick={() => {
+                      setShowKeyModal(false);
+                      setMapProvider('LEAFLET');
+                    }}
+                    className="btn-secondary"
+                    style={{ padding: '8px 16px', fontSize: '0.8rem' }}
+                  >
+                    Use Built-in Leaflet
+                  </button>
+                  <button
+                    onClick={() => loadGoogleMapsWithKey(customApiKey)}
+                    className="btn-primary"
+                    disabled={!customApiKey.trim() || apiKeyLoading}
+                    style={{ padding: '8px 16px', fontSize: '0.8rem', opacity: customApiKey.trim() && !apiKeyLoading ? 1 : 0.5 }}
+                  >
+                    {apiKeyLoading ? 'Connecting...' : 'Apply & Connect'}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
