@@ -49,6 +49,8 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
   const [selectedRiskFilter, setSelectedRiskFilter] = useState<string>('ALL');
   const [selectedStateFilter, setSelectedStateFilter] = useState<string>('ALL');
 
+  const [isMapReady, setIsMapReady] = useState<number>(0);
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Leaflet refs
@@ -259,6 +261,8 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
         trafficLayer.setMap(gmap);
         googleTrafficLayerRef.current = trafficLayer;
       }
+
+      setIsMapReady(v => v + 1);
     } else {
       // Leaflet High-Performance GIS Engine
       try {
@@ -328,6 +332,8 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
           }
         }, 300);
 
+        setIsMapReady(v => v + 1);
+
         return () => {
           clearTimeout(timer1);
           clearTimeout(timer2);
@@ -341,6 +347,17 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
       cleanupMaps();
     };
   }, [mapProvider]);
+
+  // Window resize handler to keep map full-bleed
+  useEffect(() => {
+    const handleResize = () => {
+      if (leafletMapRef.current) {
+        leafletMapRef.current.invalidateSize();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Synchronize Active View Mode (Satellite, Hybrid, Terrain, Vibrant, Dark) across Engines
   useEffect(() => {
@@ -545,9 +562,9 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
         const marker = L.marker([p.latitude, p.longitude], { icon: customIcon }).addTo(leafletMapRef.current!);
         
         const popupContent = `
-          <div style="padding: 8px; min-width: 250px; font-family: 'Inter', sans-serif;">
+          <div style="padding: 10px; min-width: 260px; font-family: 'Inter', sans-serif;">
             <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px;">
-              <span style="font-family: monospace; font-size: 11px; color: #38bdf8; font-weight: 700;">${p.code}</span>
+              <span style="font-family: monospace; font-size: 11px; color: #38bdf8; font-weight: 700; background: rgba(56, 189, 248, 0.12); padding: 2px 6px; border-radius: 4px;">${p.code}</span>
               <span style="background: ${pinColor}25; color: ${pinColor}; border: 1px solid ${pinColor}55; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 9999px;">
                 ${p.riskCategory} (${p.riskScore}/100)
               </span>
@@ -566,8 +583,8 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
               </div>
             </div>
 
-            <div style="font-size: 11px; color: #38bdf8; font-weight: 700; text-align: center; cursor: pointer;">
-              Click marker to select project ➔
+            <div style="font-size: 11px; color: #38bdf8; font-weight: 700; text-align: center;">
+              Click project card to view XAI analytics ➔
             </div>
           </div>
         `;
@@ -581,7 +598,7 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
         }
       });
     }
-  }, [filteredProjects, showCorridors, mapProvider]);
+  }, [filteredProjects, showCorridors, mapProvider, isMapReady]);
 
   // Center on Selected Project
   useEffect(() => {

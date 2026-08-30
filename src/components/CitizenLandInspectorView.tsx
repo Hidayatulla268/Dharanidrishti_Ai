@@ -42,6 +42,7 @@ interface CitizenLandInspectorViewProps {
 export const CitizenLandInspectorView: React.FC<CitizenLandInspectorViewProps> = () => {
   const [searchQuery, setSearchQuery] = useState<string>('Gat No. 412/A, Palghar');
   const [activeParcel, setActiveParcel] = useState<LandParcelDossier>(INITIAL_LAND_PARCELS[0]);
+  const [isMapReady, setIsMapReady] = useState<number>(0);
 
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const googleMapRef = useRef<any>(null);
@@ -107,6 +108,8 @@ export const CitizenLandInspectorView: React.FC<CitizenLandInspectorViewProps> =
         setActiveParcel(clickedParcel);
         setSearchQuery(`${clickedParcel.khasraGatNumber}, ${clickedParcel.district}`);
       });
+
+      setIsMapReady(v => v + 1);
     } else {
       // Leaflet High-Res Fallback
       if (leafletMapRef.current) {
@@ -152,6 +155,7 @@ export const CitizenLandInspectorView: React.FC<CitizenLandInspectorViewProps> =
         }, 200);
 
         leafletMapRef.current = map;
+        setIsMapReady(v => v + 1);
       } catch (err) {
         console.error('Failed to init citizen map:', err);
       }
@@ -170,6 +174,17 @@ export const CitizenLandInspectorView: React.FC<CitizenLandInspectorViewProps> =
         (mapContainerRef.current as any)._leaflet_id = null;
       }
     };
+  }, []);
+
+  // Window resize handler
+  useEffect(() => {
+    const handleResize = () => {
+      if (leafletMapRef.current) {
+        leafletMapRef.current.invalidateSize();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Update Marker when active parcel changes
@@ -233,7 +248,7 @@ export const CitizenLandInspectorView: React.FC<CitizenLandInspectorViewProps> =
       leafletMarkerRef.current = marker;
       leafletMapRef.current.panTo([activeParcel.latitude, activeParcel.longitude]);
     }
-  }, [activeParcel]);
+  }, [activeParcel, isMapReady]);
 
   const progress = activeParcel.registrationProgress;
 
