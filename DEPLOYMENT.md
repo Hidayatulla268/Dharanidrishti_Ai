@@ -14,7 +14,7 @@ This guide outlines step-by-step instructions to deploy **DharaniDrishti AI** in
    - **Build Command**: `npm run build`
    - **Output Directory**: `dist`
 4. Add Environment Variables:
-   - `VITE_GOOGLE_MAPS_API_KEY`: `AIzaSyDiMygvkgArd-Jexwuf1OZJ74PRlk2anik`
+   - `VITE_GOOGLE_MAPS_API_KEY`: `your_google_maps_api_key_here` (Optional - Leave blank to use built-in Leaflet OpenStreetMap dual-engine)
    - `VITE_APP_ENV`: `production`
 5. Click **"Deploy"**.
 6. Your platform will be instantly live on a global CDN with SSL and automatic edge caching!

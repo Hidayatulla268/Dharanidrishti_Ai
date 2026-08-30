@@ -183,7 +183,7 @@ export const ApiGatewayView: React.FC<ApiGatewayViewProps> = ({
 
   const copyCurlCmd = () => {
     navigator.clipboard.writeText(`curl -X POST "https://api.dharanidrishti.gov.in/v1/predict/delay" \\
-  -H "Authorization: Bearer ddr_live_sec_89f023a" \\
+  -H "Authorization: Bearer <YOUR_API_KEY_HERE>" \\
   -H "Content-Type: application/json" \\
   -d '${JSON.stringify(samplePredictBody)}'`);
     setCopiedCurl(true);
