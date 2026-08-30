@@ -32,7 +32,7 @@ import {
 } from 'lucide-react';
 import { LandAcquisitionProject, RiskCategory, ProjectAgency, AcquisitionStage, UserRole } from '../types';
 import { PERSONA_CONFIGS, PersonaDetails } from '../data/personaConfig';
-import parliamentImg from '../assets/parliament_glow.jpg';
+import { ParliamentAnimatedArt } from './ParliamentAnimatedArt';
 
 interface DashboardViewProps {
   projects: LandAcquisitionProject[];
@@ -176,21 +176,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </p>
           </div>
 
-          {/* Parliament Artwork Container */}
+          {/* Parliament Animated Vector Artwork (Built-in with Waving Flag & Golden Neon Pulse) */}
           <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <img 
-              src={parliamentImg} 
-              alt="Indian Parliament & Rashtrapati Bhavan" 
-              style={{
-                height: '115px',
-                width: 'auto',
-                maxWidth: '300px',
-                objectFit: 'contain',
-                borderRadius: '8px',
-                filter: 'drop-shadow(0 0 16px rgba(245, 158, 11, 0.45))',
-                opacity: 0.95
-              }}
-            />
+            <ParliamentAnimatedArt />
           </div>
         </div>
       </div>

@@ -405,20 +405,96 @@ html, body {
   margin-bottom: 20px;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(90deg, #1e1338 0%, #151e36 45%, #10172a 100%);
-  border: 1px solid rgba(139, 92, 246, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  background: linear-gradient(135deg, #1e1338 0%, #151e36 45%, #0e162b 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.hero-parliament-art {
+/* Parliament Animated Art Keyframes & Styling */
+@keyframes flagWave {
+  0% {
+    transform: skewY(0deg) scaleY(1);
+  }
+  50% {
+    transform: skewY(-5deg) scaleY(0.95) translateX(1px);
+  }
+  100% {
+    transform: skewY(2deg) scaleY(1.02);
+  }
+}
+
+.waving-flag-group {
+  animation: flagWave 2.4s ease-in-out infinite alternate;
+  transform-origin: left center;
+}
+
+@keyframes domeNeonPulse {
+  0%, 100% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 4px #f59e0b);
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 14px #fbbf24) drop-shadow(0 0 2px #ffffff);
+  }
+}
+
+.dome-pulsing-stroke {
+  animation: domeNeonPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-40px) scale(1.1);
+    opacity: 0;
+  }
+}
+
+.gold-particle {
   position: absolute;
-  right: 20px;
-  bottom: 0;
-  height: 125px;
+  border-radius: 50%;
+  background: #fbbf24;
+  box-shadow: 0 0 8px #fbbf24;
   pointer-events: none;
-  opacity: 0.9;
+}
+
+.gold-particle.p1 {
+  width: 4px;
+  height: 4px;
+  top: 75%;
+  left: 28%;
+  animation: particleFloat 3.2s infinite ease-in-out;
+}
+
+.gold-particle.p2 {
+  width: 5px;
+  height: 5px;
+  top: 65%;
+  left: 70%;
+  animation: particleFloat 4s infinite ease-in-out 1s;
+}
+
+.gold-particle.p3 {
+  width: 3px;
+  height: 3px;
+  top: 85%;
+  left: 52%;
+  animation: particleFloat 2.8s infinite ease-in-out 0.4s;
+}
+
+.gold-particle.p4 {
+  width: 4px;
+  height: 4px;
+  top: 55%;
+  left: 82%;
+  animation: particleFloat 3.6s infinite ease-in-out 1.7s;
 }
 
 /* KPI 5-Column Grid */
