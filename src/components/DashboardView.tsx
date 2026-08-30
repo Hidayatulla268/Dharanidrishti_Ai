@@ -40,6 +40,7 @@ interface DashboardViewProps {
   onRoleChange: (role: UserRole) => void;
   onSelectProjectForXai: (project: LandAcquisitionProject) => void;
   onSelectProjectForGis: (project: LandAcquisitionProject) => void;
+  onNavigateToAlerts?: () => void;
 }
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
@@ -47,7 +48,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   currentRole,
   onRoleChange,
   onSelectProjectForXai,
-  onSelectProjectForGis
+  onSelectProjectForGis,
+  onNavigateToAlerts
 }) => {
   const [selectedCorridorFilter, setSelectedCorridorFilter] = useState<string>('ALL');
   const [inspectModalProject, setInspectModalProject] = useState<LandAcquisitionProject | null>(null);
@@ -98,25 +100,88 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       <div className="perspective-ribbon">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#fbbf24', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.04em' }}>
           <Users size={16} style={{ color: '#fbbf24' }} />
-          <span>SWITCH STAKEHOLDER PERSPECTIVE:</span>
+          <span>STATUTORY OVERSIGHT PERSPECTIVE:</span>
         </div>
 
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          {(Object.keys(PERSONA_CONFIGS) as UserRole[]).map((r) => {
-            const pConf = PERSONA_CONFIGS[r];
-            const isActive = currentRole === r;
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflowX: 'auto', paddingBottom: '2px' }}>
+          {Object.entries(PERSONA_CONFIGS).map(([roleKey, p]) => {
+            const isActive = currentRole === roleKey;
             return (
               <button
-                key={r}
-                onClick={() => onRoleChange(r)}
-                className={`perspective-capsule-btn ${isActive ? 'active' : ''}`}
-                style={isActive ? { borderColor: pConf.badgeColor, color: pConf.badgeColor, background: `${pConf.badgeColor}22` } : {}}
+                key={roleKey}
+                onClick={() => onRoleChange(roleKey as UserRole)}
+                style={{
+                  padding: '5px 12px',
+                  borderRadius: 'var(--radius-full)',
+                  fontSize: '0.74rem',
+                  fontWeight: isActive ? 800 : 600,
+                  background: isActive ? '#fbbf24' : 'rgba(255, 255, 255, 0.05)',
+                  color: isActive ? '#080c17' : '#94a3b8',
+                  border: `1px solid ${isActive ? '#fbbf24' : 'rgba(255, 255, 255, 0.1)'}`,
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  transition: 'all var(--transition-fast)'
+                }}
               >
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: pConf.badgeColor }} />
-                <span>{pConf.shortTitle}</span>
+                {p.shortTitle}
               </button>
             );
           })}
+        </div>
+      </div>
+
+      {/* 🚨 Real-Time Early Warning System Sentinel Ticker Banner */}
+      <div 
+        onClick={() => onNavigateToAlerts?.()}
+        style={{
+          background: 'linear-gradient(90deg, rgba(239, 68, 68, 0.16) 0%, rgba(245, 158, 11, 0.12) 60%, rgba(15, 23, 42, 0.8) 100%)',
+          border: '1px solid rgba(239, 68, 68, 0.4)',
+          borderRadius: 'var(--radius-md)',
+          padding: '12px 18px',
+          marginBottom: '18px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '12px',
+          cursor: 'pointer',
+          boxShadow: '0 8px 20px -4px rgba(239, 68, 68, 0.2)',
+          transition: 'all var(--transition-fast)'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{
+            width: '34px',
+            height: '34px',
+            borderRadius: '50%',
+            background: 'rgba(239, 68, 68, 0.25)',
+            border: '1px solid rgba(239, 68, 68, 0.6)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#ef4444',
+            flexShrink: 0
+          }}>
+            <ShieldAlert size={18} />
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+              <span style={{ fontSize: '0.72rem', fontWeight: 900, color: '#ff6b6b', letterSpacing: '0.04em', background: 'rgba(239, 68, 68, 0.2)', padding: '1px 8px', borderRadius: 'var(--radius-full)', border: '1px solid rgba(239, 68, 68, 0.4)' }}>
+                🚨 EARLY WARNING SYSTEM
+              </span>
+              <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#fbbf24' }}>
+                ⚠️ High Risk Detected
+              </span>
+            </div>
+            <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#ffffff' }}>
+              Project ABC may face a 42-day delay due to unresolved compensation disputes.
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--primary-400)', fontSize: '0.78rem', fontWeight: 700 }}>
+          <span>Inspect Threat in Sentinel Hub</span>
+          <ArrowRight size={14} />
         </div>
       </div>
 

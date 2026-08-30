@@ -273,6 +273,7 @@ export function App() {
                 onRoleChange={setCurrentRole}
                 onSelectProjectForXai={handleSelectProjectForXai}
                 onSelectProjectForGis={handleSelectProjectForGis}
+                onNavigateToAlerts={() => setActiveTab('ALERTS')}
               />
             )
           )}

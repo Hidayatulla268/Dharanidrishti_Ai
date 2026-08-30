@@ -1907,6 +1907,21 @@ export const INITIAL_MODEL_METRICS: ModelMetrics = {
 
 export const INITIAL_ALERTS: AlertNotification[] = [
   {
+    id: 'alt-ews-abc',
+    projectId: 'proj-001',
+    projectName: 'Project ABC (Bharatmala Priority Corridor Package 04)',
+    state: 'Maharashtra',
+    district: 'Palghar & Thane',
+    timestamp: '2026-08-30T11:30:00Z',
+    severity: 'CRITICAL',
+    triggerRule: 'Rule #EWS-COMP-42: Compensation Escrow Disbursement Blocked > 40 Days',
+    message: '⚠️ High Risk Detected: Project ABC may face a 42-day delay due to unresolved compensation disputes.',
+    prescribedRemedy: 'Initiate expedited Special CALA Lok Adalat Bench with 25% consent incentive disbursement to clear 42-day critical path delay.',
+    isRead: false,
+    targetRole: 'DISTRICT_COLLECTOR',
+    channel: 'GATISHAKTI_NMP'
+  },
+  {
     id: 'alt-001',
     projectId: 'proj-001',
     projectName: 'Delhi-Mumbai Expressway (Package 14 - Palghar-Dahanu Spur)',
