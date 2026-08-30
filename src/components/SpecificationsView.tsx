@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   FileText, 
   Layers, 
@@ -6,19 +6,137 @@ import {
   Cpu, 
   Network, 
   ShieldCheck, 
-  Sparkles,
-  Download,
-  BookOpen
+  Sparkles, 
+  Download, 
+  BookOpen,
+  AlertTriangle,
+  Brain,
+  Map,
+  Users,
+  Sprout,
+  Zap,
+  Shield,
+  GitPullRequest,
+  Activity,
+  Globe,
+  FileDown,
+  Flame,
+  ChevronRight,
+  ArrowRight
 } from 'lucide-react';
 
 export const SpecificationsView: React.FC = () => {
+  const [selectedSuperpower, setSelectedSuperpower] = useState<number | null>(null);
+
+  const superpowers = [
+    {
+      num: '01',
+      title: '🚨 Autonomous Early Warning Sentinel',
+      tag: '42-Day Detection',
+      color: '#ef4444',
+      icon: <Flame size={20} style={{ color: '#ef4444' }} />,
+      desc: 'Proactive anomaly detection flagging bottlenecks (e.g. Project ABC 42-day delay due to compensation disputes) with 3-channel SMS, Email, and GatiShakti escalation.',
+      metrics: '16 Lead Triggers • 94.6% Certainty • Live Simulation Sandbox'
+    },
+    {
+      num: '02',
+      title: '🧠 Explainable AI (XAI) & SHAP Waterfall',
+      tag: 'TreeExplainer',
+      color: '#8b5cf6',
+      icon: <Brain size={20} style={{ color: '#8b5cf6' }} />,
+      desc: 'Game-theoretic feature decomposition (+Red risk escalators / -Green mitigators) from 0.0 baseline + What-If sliders calculating exact months & ₹ Cr saved.',
+      metrics: 'SHAP Waterfall • SVG Radial Gauge • What-If Scenario Physics'
+    },
+    {
+      num: '03',
+      title: '🗺️ 5-Mode Dual-Engine GIS Command Center',
+      tag: 'Dual Raster',
+      color: '#0ea5e9',
+      icon: <Map size={20} style={{ color: '#0ea5e9' }} />,
+      desc: 'Zero-key Leaflet 1.9.4 + optional Google Maps platform with ESRI World Imagery, Hybrid satellite, Terrain contours, Dark Cyber, and live Google Traffic.',
+      metrics: '10 Corridors Mapped • Sub-second Tile Swap • Vector Polylines'
+    },
+    {
+      num: '04',
+      title: '🏛️ Dynamic 5-Persona Statutory Engine',
+      tag: 'Role Intelligence',
+      color: '#f59e0b',
+      icon: <Users size={20} style={{ color: '#f59e0b' }} />,
+      desc: 'Instant perspective switching across Cabinet Minister, State Chief Secretary, District Collector, Legal Counsel, and Citizen with Parliament vector art.',
+      metrics: '5 Tailored Mandates • Custom Jurisdiction KPI • Neon Flag Art'
+    },
+    {
+      num: '05',
+      title: '🌾 100% Transparent Citizen Land Inspector',
+      tag: 'Bhoomi Samvaad',
+      color: '#10b981',
+      icon: <Sprout size={20} style={{ color: '#10b981' }} />,
+      desc: 'Public lookup by Gat/Khasra survey number, cadastral parcel boundary visualizer, 4-stage mutation tracker, RFCTLARR compensation calculator & grievance log.',
+      metrics: 'Plot Polygon Visualizer • DBT Status • Online Objections'
+    },
+    {
+      num: '06',
+      title: '⚡ Automated Prescriptive Action Playbooks',
+      tag: 'RFCTLARR 2013',
+      color: '#ec4899',
+      icon: <Zap size={20} style={{ color: '#ec4899' }} />,
+      desc: 'Autonomous generation of legal briefs, Special Lok Adalat bench requisitions, 25% consent incentive bonuses, and Sec 19 fast-track declarations.',
+      metrics: '₹148 Cr Public Savings • 1-Click Notices • Policy Drafting'
+    },
+    {
+      num: '07',
+      title: '🤝 GatiShakti 8-Ministry Clearance Matrix',
+      tag: 'NOC Hub',
+      color: '#38bdf8',
+      icon: <Network size={20} style={{ color: '#38bdf8' }} />,
+      desc: 'Cross-verification across 8 ministries (Forest, Railways, Defense, NHAI, ASI, Tribal, PowerGrid, Waterways) with real-time SLA countdown timers.',
+      metrics: '16 Inter-Agency NOCs • SLA Timers • Deadlock Unblocking'
+    },
+    {
+      num: '08',
+      title: '🛡️ Cryptographic SHA-256 Blockchain Audit',
+      tag: 'CAG Compliant',
+      color: '#6366f1',
+      icon: <Shield size={20} style={{ color: '#6366f1' }} />,
+      desc: 'Browser-native Web Cryptography API hashing all administrative actions into an immutable ledger: Hash(N) = SHA256(Record_N + Hash_N-1) + Session Lock & MFA.',
+      metrics: 'Hardware Crypto • Session Lock (Ctrl+L) • TOTP MFA'
+    },
+    {
+      num: '09',
+      title: '🔄 Continuous MLOps Learning Pipeline',
+      tag: '0.942 AUC',
+      color: '#14b8a6',
+      icon: <Activity size={20} style={{ color: '#14b8a6' }} />,
+      desc: 'Simulated model retraining daemon (v3.4.2 ➔ v3.5.0), interactive ROC-AUC curves, confusion matrix heatmaps, and Bayesian hyperparameter tuning.',
+      metrics: 'Batch Ingestion • Feature Drift Detection • ONNX Runtime'
+    },
+    {
+      num: '10',
+      title: '🌐 G2G OpenAPI Gateway & Sandbox',
+      tag: 'OpenAPI 3.0',
+      color: '#06b6d4',
+      icon: <Globe size={20} style={{ color: '#06b6d4' }} />,
+      desc: 'Interactive REST API Sandbox for Bhoomi Rashi, PARIVESH, PFMS, e-Courts, and PM GatiShakti with live JWT token generator and rate-limiting telemetry.',
+      metrics: '5 Mock National Endpoints • JWT Auth • Telemetry Monitor'
+    },
+    {
+      num: '11',
+      title: '📄 Built-In Architecture Manual PDF Engine',
+      tag: 'ReportLab Python',
+      color: '#eab308',
+      icon: <FileDown size={20} style={{ color: '#eab308' }} />,
+      desc: 'Multi-page comprehensive engineering whitepaper compiled directly from ReportLab Python covering 7 deep technical chapters with 1-click download.',
+      metrics: '7 Deep Chapters • CAG Specs • 1-Click Instant Export'
+    }
+  ];
+
   return (
     <div>
       {/* Header */}
       <div className="view-header">
         <div className="view-header-title">
           <h2>Problem Statement Specifications & Technical Architecture</h2>
-          <p>Official Problem Statement ID: 26017 | Complete Scope of Study & Technology Stacks.</p>
+          <p>Official Problem Statement ID: 26017 | Complete Scope of Study, Technology Stacks & 11 Exclusive Superpowers.</p>
         </div>
 
         <div className="view-header-actions">
@@ -47,6 +165,109 @@ export const SpecificationsView: React.FC = () => {
           <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
             Shift project monitoring from reactive reporting to predictive decision-making by utilizing ensemble machine learning, Explainable AI (SHAP), GIS geospatial mapping, and prescriptive decision support to forecast delays before they occur and suggest targeted interventions.
           </div>
+        </div>
+      </div>
+
+      {/* 🌟 11 PLATFORM SUPERPOWERS & EXCLUSIVE FEATURES GRID */}
+      <div className="glass-panel" style={{ padding: '24px', marginBottom: '24px', background: 'linear-gradient(180deg, rgba(14, 165, 233, 0.08) 0%, var(--bg-glass-card) 100%)', border: '1px solid rgba(14, 165, 233, 0.3)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px', flexWrap: 'wrap', gap: '10px' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Sparkles size={20} style={{ color: '#fbbf24' }} />
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 900, margin: 0, color: '#ffffff' }}>
+                🌟 11 Exclusive Platform Superpowers Built into DharaniDrishti AI
+              </h3>
+            </div>
+            <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginTop: '4px', margin: 0 }}>
+              State-of-the-art features engineered specifically to overcome the limitations of legacy government portals.
+            </p>
+          </div>
+
+          <span style={{ 
+            padding: '4px 12px', 
+            borderRadius: 'var(--radius-full)', 
+            background: 'rgba(245, 158, 11, 0.15)', 
+            border: '1px solid rgba(245, 158, 11, 0.4)', 
+            color: '#fbbf24', 
+            fontSize: '0.75rem', 
+            fontWeight: 800 
+          }}>
+            11 Supercharged Modules Active
+          </span>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
+          {superpowers.map((sp, idx) => (
+            <div 
+              key={idx}
+              onClick={() => setSelectedSuperpower(selectedSuperpower === idx ? null : idx)}
+              style={{
+                background: 'rgba(15, 23, 42, 0.75)',
+                border: `1px solid ${selectedSuperpower === idx ? sp.color : 'var(--border-subtle)'}`,
+                borderRadius: 'var(--radius-lg)',
+                padding: '16px 18px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                transition: 'all var(--transition-fast)',
+                cursor: 'pointer',
+                boxShadow: selectedSuperpower === idx ? `0 8px 24px -4px ${sp.color}33` : 'none'
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ 
+                      padding: '8px', 
+                      borderRadius: 'var(--radius-md)', 
+                      background: `${sp.color}18`,
+                      border: `1px solid ${sp.color}44`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      {sp.icon}
+                    </div>
+                    <div>
+                      <span style={{ fontSize: '0.68rem', fontWeight: 800, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>MODULE #{sp.num}</span>
+                      <h4 style={{ fontSize: '0.92rem', fontWeight: 800, color: '#ffffff', margin: 0 }}>{sp.title}</h4>
+                    </div>
+                  </div>
+
+                  <span style={{ 
+                    fontSize: '0.68rem', 
+                    fontWeight: 800, 
+                    padding: '2px 8px', 
+                    borderRadius: 'var(--radius-full)', 
+                    background: `${sp.color}22`, 
+                    color: sp.color, 
+                    border: `1px solid ${sp.color}44` 
+                  }}>
+                    {sp.tag}
+                  </span>
+                </div>
+
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.45, marginBottom: '12px' }}>
+                  {sp.desc}
+                </p>
+              </div>
+
+              <div style={{ 
+                borderTop: '1px solid var(--border-subtle)', 
+                paddingTop: '8px', 
+                fontSize: '0.72rem', 
+                color: '#94a3b8', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'space-between' 
+              }}>
+                <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>{sp.metrics}</span>
+                <span style={{ color: sp.color, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '2px' }}>
+                  Details <ChevronRight size={12} />
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
