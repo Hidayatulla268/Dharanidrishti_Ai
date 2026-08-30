@@ -28,6 +28,7 @@ export type NavTab =
   | 'ALERTS'
   | 'API_GATEWAY'
   | 'AUDIT_RBAC'
+  | 'SECURITY_CENTER'
   | 'SPECIFICATIONS';
 
 interface SidebarProps {
@@ -216,6 +217,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <span>API Gateway & Ingest</span>
                 <span className="item-badge" style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#34d399' }}>
                   REST
+                </span>
+              </button>
+
+              <button
+                className={`sidebar-item ${activeTab === 'SECURITY_CENTER' ? 'active' : ''}`}
+                onClick={() => onSelectTab('SECURITY_CENTER')}
+              >
+                <ShieldCheck size={17} style={{ color: '#10b981' }} />
+                <span>Security & Cyber Governance</span>
+                <span className="item-badge" style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#34d399' }}>
+                  SECURE
                 </span>
               </button>
 

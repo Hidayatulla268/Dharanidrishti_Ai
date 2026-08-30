@@ -67,7 +67,7 @@ export const ParliamentAnimatedArt: React.FC<ParliamentAnimatedArtProps> = ({ cl
   }, []);
 
   return (
-    <div 
+    <div
       className={`parliament-interactive-art ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -76,26 +76,26 @@ export const ParliamentAnimatedArt: React.FC<ParliamentAnimatedArtProps> = ({ cl
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        maxWidth: '540px',
+        maxWidth: '800px',
         width: '100%',
-        minHeight: '155px',
+        minHeight: '150px',
         userSelect: 'none',
         overflow: 'visible'
       }}
     >
       {/* 1. Subtle, Gentle Radial Glow Behind Golden Lines (Toned down) */}
-      <div 
+      <div
         style={{
           position: 'absolute',
           inset: '-8px',
-          background: isHovered 
+          background: isHovered
             ? 'radial-gradient(ellipse at center, rgba(245, 158, 11, 0.18) 0%, rgba(251, 191, 36, 0.08) 50%, transparent 75%)'
             : 'radial-gradient(ellipse at center, rgba(245, 158, 11, 0.12) 0%, rgba(251, 191, 36, 0.04) 50%, transparent 75%)',
           filter: 'blur(14px)',
           transition: 'all 0.4s ease-out',
           pointerEvents: 'none',
           zIndex: 0
-        }} 
+        }}
       />
 
       {/* 2. Floating Golden Sparks & Light Particles */}
@@ -107,7 +107,7 @@ export const ParliamentAnimatedArt: React.FC<ParliamentAnimatedArtProps> = ({ cl
       </div>
 
       {/* 3. Pure Transparent Canvas with Golden Architectural CAD Lines */}
-      <div 
+      <div
         style={{
           position: 'relative',
           width: '100%',
@@ -117,7 +117,7 @@ export const ParliamentAnimatedArt: React.FC<ParliamentAnimatedArtProps> = ({ cl
           zIndex: 2,
           transition: 'transform 0.4s ease-out, filter 0.4s ease-out',
           transform: isHovered ? 'scale(1.02) translateY(-1px)' : 'scale(1)',
-          filter: isHovered 
+          filter: isHovered
             ? 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.35))'
             : 'drop-shadow(0 0 5px rgba(245, 158, 11, 0.22))',
           opacity: isLoaded ? 1 : 0.4
@@ -138,7 +138,7 @@ export const ParliamentAnimatedArt: React.FC<ParliamentAnimatedArtProps> = ({ cl
         <div className="shimmer-sweep-beam" />
 
         {/* 5. Animated Waving Indian Tricolor Flag with Gold Border */}
-        <div 
+        <div
           className="flag-waving-container"
           style={{
             position: 'absolute',
@@ -152,36 +152,36 @@ export const ParliamentAnimatedArt: React.FC<ParliamentAnimatedArtProps> = ({ cl
             {/* Animated Flag with Golden Border Outline */}
             <g className="waving-flag-group">
               {/* Outer Golden Border & Background */}
-              <path 
-                d="M 0,1 C 10,-2 20,4 34,1 L 34,22 C 20,25 10,19 0,22 Z" 
-                fill="none" 
-                stroke="#fbbf24" 
-                strokeWidth="1.2" 
-                strokeLinejoin="round" 
+              <path
+                d="M 0,1 C 10,-2 20,4 34,1 L 34,22 C 20,25 10,19 0,22 Z"
+                fill="none"
+                stroke="#fbbf24"
+                strokeWidth="1.2"
+                strokeLinejoin="round"
               />
 
               {/* Saffron Stripe with Gold Border */}
-              <path 
-                d="M 0,1 C 10,-2 20,4 34,1 L 34,8 C 20,11 10,5 0,8 Z" 
-                fill="#ff9933" 
-                stroke="#fbbf24" 
-                strokeWidth="0.6" 
+              <path
+                d="M 0,1 C 10,-2 20,4 34,1 L 34,8 C 20,11 10,5 0,8 Z"
+                fill="#ff9933"
+                stroke="#fbbf24"
+                strokeWidth="0.6"
               />
 
               {/* White Stripe with Gold Border */}
-              <path 
-                d="M 0,8 C 10,5 20,11 34,8 L 34,15 C 20,18 10,12 0,15 Z" 
-                fill="#ffffff" 
-                stroke="#fbbf24" 
-                strokeWidth="0.6" 
+              <path
+                d="M 0,8 C 10,5 20,11 34,8 L 34,15 C 20,18 10,12 0,15 Z"
+                fill="#ffffff"
+                stroke="#fbbf24"
+                strokeWidth="0.6"
               />
 
               {/* Green Stripe with Gold Border */}
-              <path 
-                d="M 0,15 C 10,12 20,18 34,15 L 34,22 C 20,25 10,19 0,22 Z" 
-                fill="#138808" 
-                stroke="#fbbf24" 
-                strokeWidth="0.6" 
+              <path
+                d="M 0,15 C 10,12 20,18 34,15 L 34,22 C 20,25 10,19 0,22 Z"
+                fill="#138808"
+                stroke="#fbbf24"
+                strokeWidth="0.6"
               />
 
               {/* Ashoka Chakra */}
@@ -192,7 +192,7 @@ export const ParliamentAnimatedArt: React.FC<ParliamentAnimatedArtProps> = ({ cl
         </div>
 
         {/* 6. Subtle Golden Beacon Pulse at Spire Tip */}
-        <div 
+        <div
           style={{
             position: 'absolute',
             top: '5%',

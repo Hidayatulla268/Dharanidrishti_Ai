@@ -14,6 +14,7 @@ import {
   Layers
 } from 'lucide-react';
 import { LandAcquisitionProject } from '../types';
+import { sanitizeCsvCell, checkRateLimit } from '../services/securityService';
 
 interface ApiGatewayViewProps {
   projects: LandAcquisitionProject[];
@@ -46,6 +47,12 @@ export const ApiGatewayView: React.FC<ApiGatewayViewProps> = ({
   };
 
   const executeMockApi = () => {
+    const rate = checkRateLimit('api_gateway_sandbox', 5, 2);
+    if (!rate.allowed) {
+      alert('API Rate Limit Exceeded (DDoS Protection). Please wait a moment before sending more requests.');
+      return;
+    }
+
     setIsLoadingApi(true);
     setApiResponse(null);
 

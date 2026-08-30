@@ -7,7 +7,9 @@ import {
   FileText, 
   ChevronDown, 
   Check, 
-  Layers
+  Layers,
+  ShieldCheck,
+  Lock
 } from 'lucide-react';
 import { UserRole, AlertNotification } from '../types';
 import { PERSONA_CONFIGS } from '../data/personaConfig';
@@ -20,6 +22,8 @@ interface NavbarProps {
   alerts: AlertNotification[];
   onOpenAlerts: () => void;
   onOpenReport: () => void;
+  onOpenSecurity?: () => void;
+  onLockSession?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -29,7 +33,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   onThemeToggle,
   alerts,
   onOpenAlerts,
-  onOpenReport
+  onOpenReport,
+  onOpenSecurity,
+  onLockSession
 }) => {
   const [roleMenuOpen, setRoleMenuOpen] = useState(false);
   const [timeStr, setTimeStr] = useState('');
@@ -60,6 +66,27 @@ export const Navbar: React.FC<NavbarProps> = ({
           <span className="live-pulse-dot" />
           <span>AI Inference Live</span>
         </div>
+        <span style={{ color: 'var(--border-medium)' }}>|</span>
+        <div 
+          onClick={onOpenSecurity}
+          style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '5px', 
+            color: '#34d399', 
+            fontWeight: 700, 
+            fontSize: '0.75rem',
+            background: 'rgba(16, 185, 129, 0.12)',
+            padding: '2px 8px',
+            borderRadius: 'var(--radius-full)',
+            border: '1px solid rgba(16, 185, 129, 0.3)',
+            cursor: 'pointer'
+          }}
+          title="Zero-Trust Cyber Defense Active - View Security Center"
+        >
+          <ShieldCheck size={13} style={{ color: '#10b981' }} />
+          <span>Zero-Trust Active</span>
+        </div>
       </div>
 
       {/* Right Actions */}
@@ -72,6 +99,22 @@ export const Navbar: React.FC<NavbarProps> = ({
         >
           <FileText size={15} />
           <span>Executive Brief</span>
+        </button>
+
+        {/* Lock Session Button */}
+        <button
+          onClick={onLockSession}
+          style={{
+            padding: '7px',
+            borderRadius: 'var(--radius-md)',
+            background: 'var(--bg-surface)',
+            border: '1px solid var(--border-subtle)',
+            color: 'var(--accent-gold)',
+            cursor: 'pointer'
+          }}
+          title="Lock Terminal Session"
+        >
+          <Lock size={15} />
         </button>
 
         {/* Alerts Bell */}

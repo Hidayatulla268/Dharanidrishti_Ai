@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { LandParcelDossier } from '../types';
 import { INITIAL_LAND_PARCELS, findOrCreateParcelForLocation } from '../data/mockLandParcels';
+import { sanitizeInput } from '../services/securityService';
 
 declare global {
   interface Window {
@@ -52,8 +53,9 @@ export const CitizenLandInspectorView: React.FC<CitizenLandInspectorViewProps> =
   ];
 
   const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    const result = findOrCreateParcelForLocation(activeParcel.latitude, activeParcel.longitude, query);
+    const { sanitized } = sanitizeInput(query);
+    setSearchQuery(sanitized);
+    const result = findOrCreateParcelForLocation(activeParcel.latitude, activeParcel.longitude, sanitized);
     setActiveParcel(result);
 
     if (googleMapRef.current && window.google?.maps) {

@@ -276,10 +276,65 @@ export interface AuditLogEntry {
   user: string;
   role: UserRole;
   action: string;
-  category: 'PREDICTION_OVERRIDE' | 'MITIGATION_STATUS' | 'DATA_INGESTION' | 'MODEL_RETRAIN' | 'ACCESS_CHANGE' | 'CITIZEN_SEARCH';
+  category: 'PREDICTION_OVERRIDE' | 'MITIGATION_STATUS' | 'DATA_INGESTION' | 'MODEL_RETRAIN' | 'ACCESS_CHANGE' | 'CITIZEN_SEARCH' | 'SECURITY_EVENT' | 'KEY_ROTATION';
   targetProjectCode?: string;
   details: string;
   ipAddress: string;
+  // Cryptographic Tamper-Evidence
+  blockHeight?: number;
+  previousHash?: string;
+  hash?: string;
+  digitalSignature?: string;
+  isVerified?: boolean;
+}
+
+export type ThreatSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+
+export interface SecurityThreatLog {
+  id: string;
+  timestamp: string;
+  threatType: 'XSS_INJECTION_BLOCKED' | 'SQLI_ATTEMPT_DEFLECTED' | 'RATE_LIMIT_EXCEEDED' | 'PII_REDACTION_TRIGGERED' | 'UNAUTHORIZED_RBAC_ATTEMPT' | 'TAMPER_CHAIN_VIOLATION' | 'SUSPICIOUS_GEO_LOGIN';
+  severity: ThreatSeverity;
+  sourceIp: string;
+  targetEndpoint: string;
+  sanitizedInput?: string;
+  actionTaken: 'BLOCKED' | 'SANITIZED' | 'FLAGGED' | 'RATE_LIMITED' | 'SESSION_TERMINATED';
+  details: string;
+}
+
+export interface ComplianceAuditItem {
+  id: string;
+  standard: 'CERT_IN' | 'DPDPA_2023' | 'ISO_27001' | 'NIC_GIGW';
+  controlName: string;
+  status: 'COMPLIANT' | 'NEEDS_REVIEW' | 'IN_PROGRESS';
+  lastAuditedDate: string;
+  auditorRemarks: string;
+  frameworkRef: string;
+}
+
+export interface ApiKeyCredential {
+  id: string;
+  name: string;
+  maskedKey: string;
+  rawKey?: string;
+  createdAt: string;
+  expiresAt: string;
+  lastUsedAt?: string;
+  status: 'ACTIVE' | 'REVOKED' | 'EXPIRED';
+  scopes: ('read:analytics' | 'write:ingest' | 'admin:retrain' | 'legal:adjudicate')[];
+  ipWhitelist: string[];
+}
+
+export interface ActiveUserSession {
+  sessionId: string;
+  device: string;
+  browser: string;
+  location: string;
+  ipAddress: string;
+  loginTime: string;
+  lastActive: string;
+  isCurrentSession: boolean;
+  status: 'ACTIVE' | 'IDLE' | 'LOCKED';
 }
 
 export interface WhatIfParameters {

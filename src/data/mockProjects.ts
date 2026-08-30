@@ -1978,7 +1978,12 @@ export const INITIAL_AUDIT_LOGS: AuditLogEntry[] = [
     category: 'MITIGATION_STATUS',
     targetProjectCode: 'NHAI-DME-PKG14',
     details: 'Approved constitution of Special CALA Lok Adalat Bench for Palghar district with ₹25 Cr incentive pool.',
-    ipAddress: '10.24.110.42'
+    ipAddress: '10.24.110.42',
+    blockHeight: 5,
+    previousHash: '3f7a8b1c9e2d4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b',
+    hash: 'a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f01234',
+    digitalSignature: 'NIC-CA-APEX-GOV:RSA4096:a1b2c3d4e5f6a7b8...s72k9p1',
+    isVerified: true
   },
   {
     id: 'log-002',
@@ -1989,7 +1994,12 @@ export const INITIAL_AUDIT_LOGS: AuditLogEntry[] = [
     category: 'PREDICTION_OVERRIDE',
     targetProjectCode: 'ALL_PROJECTS',
     details: 'Completed scheduled batch inference for 10 active infrastructure corridors across 14,850 data points.',
-    ipAddress: '127.0.0.1 (System)'
+    ipAddress: '127.0.0.1 (System)',
+    blockHeight: 4,
+    previousHash: '8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f',
+    hash: '3f7a8b1c9e2d4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b',
+    digitalSignature: 'NIC-CA-APEX-GOV:RSA4096:3f7a8b1c9e2d4a5b...q81m4x9',
+    isVerified: true
   },
   {
     id: 'log-003',
@@ -2000,7 +2010,12 @@ export const INITIAL_AUDIT_LOGS: AuditLogEntry[] = [
     category: 'DATA_INGESTION',
     targetProjectCode: 'MSRDC-PUNE-RING',
     details: 'Ingested LiDAR boundary shapefiles for 45 parcels in Haveli taluka from Survey of India gateway.',
-    ipAddress: '10.88.45.19'
+    ipAddress: '10.88.45.19',
+    blockHeight: 3,
+    previousHash: '4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f',
+    hash: '8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f',
+    digitalSignature: 'NIC-DSC-STATE-CALA:RSA4096:8e9f0a1b2c3d4e5f...k55b2w3',
+    isVerified: true
   },
   {
     id: 'log-004',
@@ -2010,7 +2025,12 @@ export const INITIAL_AUDIT_LOGS: AuditLogEntry[] = [
     action: 'Model Retrain Benchmark Validation',
     category: 'MODEL_RETRAIN',
     details: 'Evaluated Model Version v3.4.2 against newly added Bihar & Gujarat completion milestone records. ROC-AUC: 0.932.',
-    ipAddress: '127.0.0.1 (System)'
+    ipAddress: '127.0.0.1 (System)',
+    blockHeight: 2,
+    previousHash: '0000000000000000000000000000000000000000000000000000000000000000',
+    hash: '4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f',
+    digitalSignature: 'NIC-CA-APEX-GOV:RSA4096:4e5f6a7b8c9d0e1f...z99x1m8',
+    isVerified: true
   },
   {
     id: 'log-005',
@@ -2021,6 +2041,11 @@ export const INITIAL_AUDIT_LOGS: AuditLogEntry[] = [
     category: 'MITIGATION_STATUS',
     targetProjectCode: 'NHSRCL-MAHSR-SEC3',
     details: 'Surat Special Land Tribunal dismissed final 2 tenancy appeals. Project risk reduced to 28 (LOW).',
-    ipAddress: '10.15.201.8'
+    ipAddress: '10.15.201.8',
+    blockHeight: 1,
+    previousHash: '0000000000000000000000000000000000000000000000000000000000000000',
+    hash: '0000000000000000000000000000000000000000000000000000000000000000',
+    digitalSignature: 'HC-E-SIGN-LEGAL:RSA4096:GENESIS_BLOCK...v10n8k4',
+    isVerified: true
   }
 ];
