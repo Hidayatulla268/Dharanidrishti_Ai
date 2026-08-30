@@ -23,6 +23,8 @@ declare global {
   }
 }
 
+export type MapViewMode = 'VIBRANT' | 'SATELLITE' | 'HYBRID' | 'TERRAIN' | 'DARK';
+
 interface GISMapViewProps {
   projects: LandAcquisitionProject[];
   selectedProject: LandAcquisitionProject | null;
@@ -38,7 +40,7 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
 }) => {
   const hasGoogleMaps = typeof window !== 'undefined' && !!(window as any).google?.maps;
   const [mapProvider, setMapProvider] = useState<'GOOGLE_MAPS' | 'LEAFLET'>('LEAFLET');
-  const [googleMapType, setGoogleMapType] = useState<'roadmap' | 'satellite' | 'hybrid' | 'terrain'>('roadmap');
+  const [viewMode, setViewMode] = useState<MapViewMode>('VIBRANT');
   const [showTraffic, setShowTraffic] = useState<boolean>(false);
   const [showCorridors, setShowCorridors] = useState<boolean>(true);
   const [customApiKey, setCustomApiKey] = useState<string>('');
@@ -46,12 +48,13 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
   
   const [selectedRiskFilter, setSelectedRiskFilter] = useState<string>('ALL');
   const [selectedStateFilter, setSelectedStateFilter] = useState<string>('ALL');
-  const [tileLayerType, setTileLayerType] = useState<'VOYAGER' | 'SATELLITE' | 'STREET' | 'DARK'>('VOYAGER');
 
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Leaflet refs
   const leafletMapRef = useRef<L.Map | null>(null);
+  const leafletTileLayerRef = useRef<L.TileLayer | null>(null);
+  const leafletOverlayLayerRef = useRef<L.TileLayer | null>(null);
   const leafletMarkersRef = useRef<{ [id: string]: L.Marker }>({});
   const leafletPolylineRef = useRef<L.LayerGroup | null>(null);
 
@@ -203,6 +206,14 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
   // Helper to destroy previous map instances
   const cleanupMaps = () => {
     if (leafletMapRef.current) {
+      if (leafletTileLayerRef.current) {
+        try { leafletMapRef.current.removeLayer(leafletTileLayerRef.current); } catch {}
+        leafletTileLayerRef.current = null;
+      }
+      if (leafletOverlayLayerRef.current) {
+        try { leafletMapRef.current.removeLayer(leafletOverlayLayerRef.current); } catch {}
+        leafletOverlayLayerRef.current = null;
+      }
       try {
         leafletMapRef.current.remove();
       } catch (e) {
@@ -232,8 +243,8 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
       const gmap = new window.google.maps.Map(containerRef.current, {
         center: { lat: 22.9734, lng: 78.6569 },
         zoom: 5,
-        mapTypeId: googleMapType,
-        styles: googleMapType === 'roadmap' ? googleMapsDarkStyle : [],
+        mapTypeId: viewMode === 'SATELLITE' ? 'satellite' : viewMode === 'HYBRID' ? 'hybrid' : viewMode === 'TERRAIN' ? 'terrain' : 'roadmap',
+        styles: viewMode === 'DARK' ? googleMapsDarkStyle : [],
         zoomControl: true,
         streetViewControl: false,
         fullscreenControl: false,
@@ -266,24 +277,40 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
         leafletMapRef.current = map;
         leafletPolylineRef.current = L.layerGroup().addTo(map);
 
-        let tileUrl = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
-        let subdomains: string | string[] = 'abcd';
-        if (tileLayerType === 'SATELLITE') {
-          tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-          subdomains = 'abc';
-        } else if (tileLayerType === 'STREET') {
-          tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-          subdomains = 'abc';
-        } else if (tileLayerType === 'DARK') {
-          tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
-          subdomains = 'abcd';
+        // Attach initial tile layer based on active viewMode
+        if (viewMode === 'SATELLITE') {
+          leafletTileLayerRef.current = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 18,
+            attribution: '&copy; Esri, Maxar, Earthstar'
+          }).addTo(map);
+        } else if (viewMode === 'HYBRID') {
+          leafletTileLayerRef.current = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 18,
+            attribution: '&copy; Esri, Maxar'
+          }).addTo(map);
+          leafletOverlayLayerRef.current = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 18,
+            attribution: '&copy; Esri'
+          }).addTo(map);
+        } else if (viewMode === 'TERRAIN') {
+          leafletTileLayerRef.current = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 18,
+            attribution: '&copy; Esri, USGS'
+          }).addTo(map);
+        } else if (viewMode === 'DARK') {
+          leafletTileLayerRef.current = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19,
+            subdomains: 'abcd',
+            attribution: '&copy; OpenStreetMap, CARTO'
+          }).addTo(map);
+        } else {
+          // Default Vibrant Voyager
+          leafletTileLayerRef.current = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19,
+            subdomains: 'abcd',
+            attribution: '&copy; OpenStreetMap, CARTO'
+          }).addTo(map);
         }
-
-        L.tileLayer(tileUrl, { 
-          maxZoom: 18, 
-          subdomains,
-          attribution: '&copy; OpenStreetMap contributors, CartoDB, ESRI' 
-        }).addTo(map);
 
         map.whenReady(() => {
           map.invalidateSize();
@@ -313,15 +340,72 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
     return () => {
       cleanupMaps();
     };
-  }, [mapProvider, tileLayerType]);
+  }, [mapProvider]);
 
-  // Update Google Maps Type or Traffic Layer
+  // Synchronize Active View Mode (Satellite, Hybrid, Terrain, Vibrant, Dark) across Engines
   useEffect(() => {
-    if (mapProvider === 'GOOGLE_MAPS' && googleMapRef.current && window.google?.maps) {
-      googleMapRef.current.setMapTypeId(googleMapType);
-      googleMapRef.current.setOptions({
-        styles: googleMapType === 'roadmap' ? googleMapsDarkStyle : []
-      });
+    if (mapProvider === 'LEAFLET' && leafletMapRef.current) {
+      if (leafletTileLayerRef.current) {
+        try { leafletMapRef.current.removeLayer(leafletTileLayerRef.current); } catch {}
+        leafletTileLayerRef.current = null;
+      }
+      if (leafletOverlayLayerRef.current) {
+        try { leafletMapRef.current.removeLayer(leafletOverlayLayerRef.current); } catch {}
+        leafletOverlayLayerRef.current = null;
+      }
+
+      if (viewMode === 'SATELLITE') {
+        leafletTileLayerRef.current = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+          maxZoom: 18,
+          attribution: '&copy; Esri, Maxar, Earthstar'
+        }).addTo(leafletMapRef.current);
+      } else if (viewMode === 'HYBRID') {
+        leafletTileLayerRef.current = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+          maxZoom: 18,
+          attribution: '&copy; Esri, Maxar'
+        }).addTo(leafletMapRef.current);
+
+        leafletOverlayLayerRef.current = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+          maxZoom: 18,
+          attribution: '&copy; Esri'
+        }).addTo(leafletMapRef.current);
+      } else if (viewMode === 'TERRAIN') {
+        leafletTileLayerRef.current = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+          maxZoom: 18,
+          attribution: '&copy; Esri, USGS'
+        }).addTo(leafletMapRef.current);
+      } else if (viewMode === 'DARK') {
+        leafletTileLayerRef.current = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+          maxZoom: 19,
+          subdomains: 'abcd',
+          attribution: '&copy; OpenStreetMap, CARTO'
+        }).addTo(leafletMapRef.current);
+      } else {
+        // VIBRANT
+        leafletTileLayerRef.current = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+          maxZoom: 19,
+          subdomains: 'abcd',
+          attribution: '&copy; OpenStreetMap, CARTO'
+        }).addTo(leafletMapRef.current);
+      }
+    } else if (mapProvider === 'GOOGLE_MAPS' && googleMapRef.current && window.google?.maps) {
+      if (viewMode === 'SATELLITE') {
+        googleMapRef.current.setMapTypeId('satellite');
+        googleMapRef.current.setOptions({ styles: [] });
+      } else if (viewMode === 'HYBRID') {
+        googleMapRef.current.setMapTypeId('hybrid');
+        googleMapRef.current.setOptions({ styles: [] });
+      } else if (viewMode === 'TERRAIN') {
+        googleMapRef.current.setMapTypeId('terrain');
+        googleMapRef.current.setOptions({ styles: [] });
+      } else if (viewMode === 'DARK') {
+        googleMapRef.current.setMapTypeId('roadmap');
+        googleMapRef.current.setOptions({ styles: googleMapsDarkStyle });
+      } else {
+        // VIBRANT
+        googleMapRef.current.setMapTypeId('roadmap');
+        googleMapRef.current.setOptions({ styles: [] });
+      }
 
       if (showTraffic) {
         if (!googleTrafficLayerRef.current) {
@@ -336,7 +420,7 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
         }
       }
     }
-  }, [googleMapType, showTraffic, mapProvider]);
+  }, [viewMode, showTraffic, mapProvider]);
 
   // Render Markers & Corridors
   useEffect(() => {
@@ -571,119 +655,84 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
             <span>{hasGoogleMaps ? 'Google Key Active' : 'Set Google Key'}</span>
           </button>
 
-          {/* Google Maps View Type */}
-          {mapProvider === 'GOOGLE_MAPS' ? (
-            <div style={{ display: 'flex', background: 'var(--bg-surface)', padding: '3px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-medium)' }}>
-              <button
-                onClick={() => setGoogleMapType('roadmap')}
-                style={{
-                  padding: '5px 9px',
-                  borderRadius: 'var(--radius-sm)',
-                  fontSize: '0.72rem',
-                  fontWeight: 600,
-                  background: googleMapType === 'roadmap' ? 'var(--bg-surface-hover)' : 'transparent',
-                  color: googleMapType === 'roadmap' ? 'var(--primary-400)' : 'var(--text-secondary)'
-                }}
-              >
-                Dark Roadmap
-              </button>
-              <button
-                onClick={() => setGoogleMapType('satellite')}
-                style={{
-                  padding: '5px 9px',
-                  borderRadius: 'var(--radius-sm)',
-                  fontSize: '0.72rem',
-                  fontWeight: 600,
-                  background: googleMapType === 'satellite' ? 'var(--bg-surface-hover)' : 'transparent',
-                  color: googleMapType === 'satellite' ? 'var(--primary-400)' : 'var(--text-secondary)'
-                }}
-              >
-                Satellite
-              </button>
-              <button
-                onClick={() => setGoogleMapType('hybrid')}
-                style={{
-                  padding: '5px 9px',
-                  borderRadius: 'var(--radius-sm)',
-                  fontSize: '0.72rem',
-                  fontWeight: 600,
-                  background: googleMapType === 'hybrid' ? 'var(--bg-surface-hover)' : 'transparent',
-                  color: googleMapType === 'hybrid' ? 'var(--primary-400)' : 'var(--text-secondary)'
-                }}
-              >
-                Hybrid
-              </button>
-              <button
-                onClick={() => setGoogleMapType('terrain')}
-                style={{
-                  padding: '5px 9px',
-                  borderRadius: 'var(--radius-sm)',
-                  fontSize: '0.72rem',
-                  fontWeight: 600,
-                  background: googleMapType === 'terrain' ? 'var(--bg-surface-hover)' : 'transparent',
-                  color: googleMapType === 'terrain' ? 'var(--primary-400)' : 'var(--text-secondary)'
-                }}
-              >
-                Terrain
-              </button>
-            </div>
-          ) : (
-            /* Leaflet GIS Engine Layer Switcher */
-            <div style={{ display: 'flex', background: 'var(--bg-surface)', padding: '3px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-medium)' }}>
-              <button
-                onClick={() => setTileLayerType('VOYAGER')}
-                style={{
-                  padding: '5px 9px',
-                  borderRadius: 'var(--radius-sm)',
-                  fontSize: '0.72rem',
-                  fontWeight: 600,
-                  background: tileLayerType === 'VOYAGER' ? 'var(--primary-600)' : 'transparent',
-                  color: tileLayerType === 'VOYAGER' ? '#ffffff' : 'var(--text-secondary)'
-                }}
-              >
-                🗺️ Vibrant Map
-              </button>
-              <button
-                onClick={() => setTileLayerType('SATELLITE')}
-                style={{
-                  padding: '5px 9px',
-                  borderRadius: 'var(--radius-sm)',
-                  fontSize: '0.72rem',
-                  fontWeight: 600,
-                  background: tileLayerType === 'SATELLITE' ? 'var(--primary-600)' : 'transparent',
-                  color: tileLayerType === 'SATELLITE' ? '#ffffff' : 'var(--text-secondary)'
-                }}
-              >
-                🛰️ Satellite
-              </button>
-              <button
-                onClick={() => setTileLayerType('STREET')}
-                style={{
-                  padding: '5px 9px',
-                  borderRadius: 'var(--radius-sm)',
-                  fontSize: '0.72rem',
-                  fontWeight: 600,
-                  background: tileLayerType === 'STREET' ? 'var(--primary-600)' : 'transparent',
-                  color: tileLayerType === 'STREET' ? '#ffffff' : 'var(--text-secondary)'
-                }}
-              >
-                🛣️ Streets
-              </button>
-              <button
-                onClick={() => setTileLayerType('DARK')}
-                style={{
-                  padding: '5px 9px',
-                  borderRadius: 'var(--radius-sm)',
-                  fontSize: '0.72rem',
-                  fontWeight: 600,
-                  background: tileLayerType === 'DARK' ? 'var(--primary-600)' : 'transparent',
-                  color: tileLayerType === 'DARK' ? '#ffffff' : 'var(--text-secondary)'
-                }}
-              >
-                🌑 Dark Cyber
-              </button>
-            </div>
-          )}
+          {/* Universal View Mode Switcher (Satellite, Hybrid, Terrain, Vibrant, Dark) */}
+          <div style={{ display: 'flex', background: 'var(--bg-surface)', padding: '3px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-medium)' }}>
+            <button
+              onClick={() => setViewMode('VIBRANT')}
+              style={{
+                padding: '5px 9px',
+                borderRadius: 'var(--radius-sm)',
+                fontSize: '0.72rem',
+                fontWeight: 600,
+                background: viewMode === 'VIBRANT' ? 'var(--primary-600)' : 'transparent',
+                color: viewMode === 'VIBRANT' ? '#ffffff' : 'var(--text-secondary)',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              🗺️ Vibrant
+            </button>
+            <button
+              onClick={() => setViewMode('SATELLITE')}
+              style={{
+                padding: '5px 9px',
+                borderRadius: 'var(--radius-sm)',
+                fontSize: '0.72rem',
+                fontWeight: 600,
+                background: viewMode === 'SATELLITE' ? 'var(--primary-600)' : 'transparent',
+                color: viewMode === 'SATELLITE' ? '#ffffff' : 'var(--text-secondary)',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              🛰️ Satellite
+            </button>
+            <button
+              onClick={() => setViewMode('HYBRID')}
+              style={{
+                padding: '5px 9px',
+                borderRadius: 'var(--radius-sm)',
+                fontSize: '0.72rem',
+                fontWeight: 600,
+                background: viewMode === 'HYBRID' ? 'var(--primary-600)' : 'transparent',
+                color: viewMode === 'HYBRID' ? '#ffffff' : 'var(--text-secondary)',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              🌐 Hybrid
+            </button>
+            <button
+              onClick={() => setViewMode('TERRAIN')}
+              style={{
+                padding: '5px 9px',
+                borderRadius: 'var(--radius-sm)',
+                fontSize: '0.72rem',
+                fontWeight: 600,
+                background: viewMode === 'TERRAIN' ? 'var(--primary-600)' : 'transparent',
+                color: viewMode === 'TERRAIN' ? '#ffffff' : 'var(--text-secondary)',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              ⛰️ Terrain
+            </button>
+            <button
+              onClick={() => setViewMode('DARK')}
+              style={{
+                padding: '5px 9px',
+                borderRadius: 'var(--radius-sm)',
+                fontSize: '0.72rem',
+                fontWeight: 600,
+                background: viewMode === 'DARK' ? 'var(--primary-600)' : 'transparent',
+                color: viewMode === 'DARK' ? '#ffffff' : 'var(--text-secondary)',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              🌑 Dark Cyber
+            </button>
+          </div>
 
           {/* Traffic Toggle */}
           {mapProvider === 'GOOGLE_MAPS' && (
