@@ -37,7 +37,7 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
   onNavigateToXai
 }) => {
   const hasGoogleMaps = typeof window !== 'undefined' && !!(window as any).google?.maps;
-  const [mapProvider, setMapProvider] = useState<'GOOGLE_MAPS' | 'LEAFLET'>(hasGoogleMaps ? 'GOOGLE_MAPS' : 'LEAFLET');
+  const [mapProvider, setMapProvider] = useState<'GOOGLE_MAPS' | 'LEAFLET'>('LEAFLET');
   const [googleMapType, setGoogleMapType] = useState<'roadmap' | 'satellite' | 'hybrid' | 'terrain'>('roadmap');
   const [showTraffic, setShowTraffic] = useState<boolean>(false);
   const [showCorridors, setShowCorridors] = useState<boolean>(true);
@@ -88,22 +88,22 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
     {
       featureType: 'poi.park',
       elementType: 'geometry',
-      stylers: [{ color: '#0f172a' }]
+      stylers: [{ color: '#064e3b' }]
     },
     {
       featureType: 'road',
       elementType: 'geometry',
-      stylers: [{ color: '#26354a' }]
-    },
-    {
-      featureType: 'road',
-      elementType: 'geometry.stroke',
-      stylers: [{ color: '#0f172a' }]
+      stylers: [{ color: '#1e293b' }]
     },
     {
       featureType: 'road.highway',
       elementType: 'geometry',
       stylers: [{ color: '#0284c7' }]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [{ color: '#0369a1' }]
     },
     {
       featureType: 'transit',
@@ -149,9 +149,16 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
   // Helper to destroy previous map instances
   const cleanupMaps = () => {
     if (leafletMapRef.current) {
-      leafletMapRef.current.remove();
+      try {
+        leafletMapRef.current.remove();
+      } catch (e) {
+        console.warn('Cleanup leaflet map error:', e);
+      }
       leafletMapRef.current = null;
       leafletMarkersRef.current = {};
+    }
+    if (containerRef.current) {
+      (containerRef.current as any)._leaflet_id = null;
     }
     if (googleMapRef.current) {
       googleMarkersRef.current.forEach(m => m.setMap(null));
@@ -188,35 +195,62 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
         googleTrafficLayerRef.current = trafficLayer;
       }
     } else {
-      // Leaflet Fallback
-      const map = L.map(containerRef.current, {
-        center: [22.9734, 78.6569],
-        zoom: 5,
-        zoomControl: false
-      });
-
-      L.control.zoom({ position: 'bottomright' }).addTo(map);
-      leafletMapRef.current = map;
-      leafletPolylineRef.current = L.layerGroup().addTo(map);
-
-      let tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
-      if (tileLayerType === 'SATELLITE') {
-        tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-      } else if (tileLayerType === 'STREET') {
-        tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-      }
-
-      L.tileLayer(tileUrl, { maxZoom: 18, attribution: '&copy; OpenStreetMap contributors, CartoDB' }).addTo(map);
-
-      map.whenReady(() => {
-        map.invalidateSize();
-      });
-
-      setTimeout(() => {
-        if (leafletMapRef.current) {
-          leafletMapRef.current.invalidateSize();
+      // Leaflet High-Performance GIS Engine
+      try {
+        if (containerRef.current) {
+          (containerRef.current as any)._leaflet_id = null;
         }
-      }, 200);
+
+        const map = L.map(containerRef.current, {
+          center: [22.9734, 78.6569],
+          zoom: 5,
+          zoomControl: false,
+          preferCanvas: true
+        });
+
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+        leafletMapRef.current = map;
+        leafletPolylineRef.current = L.layerGroup().addTo(map);
+
+        let tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+        let subdomains: string | string[] = 'abcd';
+        if (tileLayerType === 'SATELLITE') {
+          tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+          subdomains = 'abc';
+        } else if (tileLayerType === 'STREET') {
+          tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+          subdomains = 'abc';
+        }
+
+        L.tileLayer(tileUrl, { 
+          maxZoom: 18, 
+          subdomains,
+          attribution: '&copy; OpenStreetMap contributors, CartoDB, ESRI' 
+        }).addTo(map);
+
+        map.whenReady(() => {
+          map.invalidateSize();
+        });
+
+        const timer1 = setTimeout(() => {
+          if (leafletMapRef.current) {
+            leafletMapRef.current.invalidateSize();
+          }
+        }, 100);
+
+        const timer2 = setTimeout(() => {
+          if (leafletMapRef.current) {
+            leafletMapRef.current.invalidateSize();
+          }
+        }, 300);
+
+        return () => {
+          clearTimeout(timer1);
+          clearTimeout(timer2);
+        };
+      } catch (err) {
+        console.error('Failed to initialize Leaflet map:', err);
+      }
     }
 
     return () => {

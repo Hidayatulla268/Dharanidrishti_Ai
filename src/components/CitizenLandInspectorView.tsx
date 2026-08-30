@@ -104,33 +104,64 @@ export const CitizenLandInspectorView: React.FC<CitizenLandInspectorViewProps> =
     } else {
       // Leaflet High-Res Fallback
       if (leafletMapRef.current) {
-        leafletMapRef.current.remove();
+        try {
+          leafletMapRef.current.remove();
+        } catch (e) {
+          console.warn('Citizen map cleanup error:', e);
+        }
+        leafletMapRef.current = null;
+      }
+      if (mapContainerRef.current) {
+        (mapContainerRef.current as any)._leaflet_id = null;
       }
 
-      const map = L.map(mapContainerRef.current, {
-        center: [activeParcel.latitude, activeParcel.longitude],
-        zoom: 9,
-        zoomControl: true
-      });
+      try {
+        const map = L.map(mapContainerRef.current, {
+          center: [activeParcel.latitude, activeParcel.longitude],
+          zoom: 9,
+          zoomControl: true,
+          preferCanvas: true
+        });
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        maxZoom: 18,
-        attribution: '&copy; OpenStreetMap, CartoDB'
-      }).addTo(map);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+          maxZoom: 18,
+          subdomains: 'abcd',
+          attribution: '&copy; OpenStreetMap, CartoDB'
+        }).addTo(map);
 
-      map.on('click', (e: L.LeafletMouseEvent) => {
-        const clickedParcel = findOrCreateParcelForLocation(e.latlng.lat, e.latlng.lng);
-        setActiveParcel(clickedParcel);
-        setSearchQuery(`${clickedParcel.khasraGatNumber}, ${clickedParcel.district}`);
-      });
+        map.on('click', (e: L.LeafletMouseEvent) => {
+          const clickedParcel = findOrCreateParcelForLocation(e.latlng.lat, e.latlng.lng);
+          setActiveParcel(clickedParcel);
+          setSearchQuery(`${clickedParcel.khasraGatNumber}, ${clickedParcel.district}`);
+        });
 
-      leafletMapRef.current = map;
+        map.whenReady(() => {
+          map.invalidateSize();
+        });
+
+        setTimeout(() => {
+          if (leafletMapRef.current) {
+            leafletMapRef.current.invalidateSize();
+          }
+        }, 200);
+
+        leafletMapRef.current = map;
+      } catch (err) {
+        console.error('Failed to init citizen map:', err);
+      }
     }
 
     return () => {
       if (leafletMapRef.current) {
-        leafletMapRef.current.remove();
+        try {
+          leafletMapRef.current.remove();
+        } catch (e) {
+          console.warn('Unmount citizen map error:', e);
+        }
         leafletMapRef.current = null;
+      }
+      if (mapContainerRef.current) {
+        (mapContainerRef.current as any)._leaflet_id = null;
       }
     };
   }, []);
