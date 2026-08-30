@@ -1,6 +1,6 @@
 import os
 import sys
-from reportlab.lib.pagesizes import letter, A4
+from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
@@ -89,8 +89,8 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         'CoverTitle',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=26,
-        leading=32,
+        fontSize=25,
+        leading=30,
         textColor=DARK_BG,
         alignment=0
     )
@@ -99,8 +99,8 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         'CoverSubtitle',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=12,
-        leading=16,
+        fontSize=11.5,
+        leading=15,
         textColor=PRIMARY,
         alignment=0
     )
@@ -109,8 +109,8 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         'CoverMeta',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=9,
-        leading=13,
+        fontSize=8.5,
+        leading=12,
         textColor=TEXT_MUTED
     )
 
@@ -118,11 +118,11 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         'SectionH1',
         parent=styles['Heading1'],
         fontName='Helvetica-Bold',
-        fontSize=16,
-        leading=20,
+        fontSize=14,
+        leading=18,
         textColor=NAVY,
-        spaceBefore=16,
-        spaceAfter=8,
+        spaceBefore=14,
+        spaceAfter=6,
         keepWithNext=True
     )
 
@@ -130,11 +130,11 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         'SectionH2',
         parent=styles['Heading2'],
         fontName='Helvetica-Bold',
-        fontSize=12,
-        leading=16,
+        fontSize=11,
+        leading=15,
         textColor=PRIMARY,
-        spaceBefore=12,
-        spaceAfter=6,
+        spaceBefore=10,
+        spaceAfter=5,
         keepWithNext=True
     )
 
@@ -142,11 +142,11 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         'SectionH3',
         parent=styles['Heading3'],
         fontName='Helvetica-Bold',
-        fontSize=10,
-        leading=14,
+        fontSize=9.5,
+        leading=13,
         textColor=NAVY,
-        spaceBefore=8,
-        spaceAfter=4,
+        spaceBefore=7,
+        spaceAfter=3,
         keepWithNext=True
     )
 
@@ -154,51 +154,30 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         'BodyDark',
         parent=styles['BodyText'],
         fontName='Helvetica',
-        fontSize=9,
-        leading=13.5,
+        fontSize=8.5,
+        leading=12.5,
         textColor=TEXT_MAIN,
-        spaceAfter=6
-    )
-
-    body_bold = ParagraphStyle(
-        'BodyBold',
-        parent=body_style,
-        fontName='Helvetica-Bold'
+        spaceAfter=5
     )
 
     bullet_style = ParagraphStyle(
         'CustomBullet',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=8.5,
-        leading=13,
-        textColor=TEXT_MAIN,
-        leftIndent=14,
-        firstLineIndent=-10,
-        spaceAfter=4
-    )
-
-    code_style = ParagraphStyle(
-        'CodeSnippet',
-        parent=styles['Normal'],
-        fontName='Courier',
         fontSize=8,
-        leading=11,
-        textColor=DARK_BG,
-        backColor=colors.HexColor("#f1f5f9"),
-        borderColor=BORDER_CLR,
-        borderWidth=0.5,
-        borderPadding=6,
-        spaceBefore=4,
-        spaceAfter=6
+        leading=12,
+        textColor=TEXT_MAIN,
+        leftIndent=12,
+        firstLineIndent=-8,
+        spaceAfter=3
     )
 
     callout_style = ParagraphStyle(
         'CalloutText',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=8.5,
-        leading=12.5,
+        fontSize=8,
+        leading=12,
         textColor=TEXT_MAIN
     )
 
@@ -206,8 +185,8 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         'TableCell',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=8,
-        leading=11,
+        fontSize=7.5,
+        leading=10.5,
         textColor=TEXT_MAIN
     )
 
@@ -215,8 +194,8 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         'TableCellBold',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=8,
-        leading=11,
+        fontSize=7.5,
+        leading=10.5,
         textColor=NAVY
     )
 
@@ -224,8 +203,8 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         'TableHeader',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=8.5,
-        leading=11,
+        fontSize=8,
+        leading=10.5,
         textColor=colors.white
     )
 
@@ -234,7 +213,7 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
     # =========================================================================
     # 1. COVER / TITLE HEADER BLOCK
     # =========================================================================
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 10))
     
     # Top Classification Banner
     banner_data = [[
@@ -245,16 +224,16 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         ('BACKGROUND', (0, 0), (-1, -1), DARK_BG),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('TOPPADDING', (0, 0), (-1, -1), 5),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
+        ('TOPPADDING', (0, 0), (-1, -1), 4),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
     ]))
     story.append(banner_table)
-    story.append(Spacer(1, 16))
+    story.append(Spacer(1, 12))
 
     story.append(Paragraph("DharaniDrishti AI", title_style))
     story.append(Paragraph("Next-Gen Land Acquisition & Geospatial Decision Intelligence Platform", subtitle_style))
-    story.append(Spacer(1, 4))
-    story.append(HRFlowable(width="100%", thickness=2, color=PRIMARY, spaceBefore=4, spaceAfter=8))
+    story.append(Spacer(1, 3))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=PRIMARY, spaceBefore=3, spaceAfter=6))
     
     doc_meta_data = [
         [
@@ -275,13 +254,13 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         ('BACKGROUND', (0, 0), (-1, -1), SURFACE),
         ('BOX', (0, 0), (-1, -1), 0.5, BORDER_CLR),
         ('INNERGRID', (0, 0), (-1, -1), 0.5, BORDER_CLR),
-        ('TOPPADDING', (0, 0), (-1, -1), 5),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
-        ('LEFTPADDING', (0, 0), (-1, -1), 8),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 8),
+        ('TOPPADDING', (0, 0), (-1, -1), 4),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+        ('LEFTPADDING', (0, 0), (-1, -1), 6),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 6),
     ]))
     story.append(meta_table)
-    story.append(Spacer(1, 14))
+    story.append(Spacer(1, 10))
 
     # Executive Summary Box
     exec_summary_text = (
@@ -297,16 +276,16 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor("#f0f9ff")),
         ('BOX', (0, 0), (-1, -1), 1, colors.HexColor("#bae6fd")),
         ('LINELEFT', (0, 0), (-1, -1), 3.5, PRIMARY),
-        ('TOPPADDING', (0, 0), (-1, -1), 8),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
-        ('LEFTPADDING', (0, 0), (-1, -1), 12),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 12),
+        ('TOPPADDING', (0, 0), (-1, -1), 6),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+        ('LEFTPADDING', (0, 0), (-1, -1), 10),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 10),
     ]))
     story.append(exec_box)
-    story.append(Spacer(1, 14))
+    story.append(Spacer(1, 10))
 
     # =========================================================================
-    # 2. TABLE OF CONTENTS SUMMARY
+    # 2. SYSTEM ARCHITECTURE & 6 CORE MODULES
     # =========================================================================
     story.append(Paragraph("1. System Architecture & How the Platform Works", h1_style))
     story.append(Paragraph(
@@ -315,7 +294,7 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         body_style
     ))
 
-    # 4 Main Pillars Table
+    # 6 Main Pillars Table
     pillars_data = [
         [
             Paragraph("Module / Tier", table_header),
@@ -339,7 +318,7 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         ],
         [
             Paragraph("<b>4. GatiShakti NOC Matrix</b>", table_cell_bold),
-            Paragraph("Automated clearance coordination engine cross-verifying 8 statutory statutory bodies (MoEFCC, MoD, Railways, NHAI, ASI, Tribal Affairs, PowerGrid, Inland Waterways).", table_cell),
+            Paragraph("Automated clearance coordination engine cross-verifying 8 statutory bodies (MoEFCC, MoD, Railways, NHAI, ASI, Tribal Affairs, PowerGrid, Inland Waterways).", table_cell),
             Paragraph("16 Inter-Agency NOCs<br/>SLA Breach Countdown<br/>Direct Escalation Routing", table_cell)
         ],
         [
@@ -360,19 +339,138 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         ('BOX', (0, 0), (-1, -1), 0.5, BORDER_CLR),
         ('INNERGRID', (0, 0), (-1, -1), 0.5, BORDER_CLR),
         ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, SURFACE]),
-        ('TOPPADDING', (0, 0), (-1, -1), 5),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
-        ('LEFTPADDING', (0, 0), (-1, -1), 6),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 6),
+        ('TOPPADDING', (0, 0), (-1, -1), 4),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+        ('LEFTPADDING', (0, 0), (-1, -1), 5),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 5),
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
     ]))
     story.append(pillars_table)
-    story.append(Spacer(1, 14))
+    story.append(Spacer(1, 10))
 
     # =========================================================================
-    # 3. TECHNOLOGIES USED & WHY THEY WERE CHOSEN
+    # 3. 🚨 EARLY WARNING SYSTEM & ANOMALY SENTINEL (FEATURE DEEP DIVE)
     # =========================================================================
-    story.append(Paragraph("2. Technology Stack & Component Justification", h1_style))
+    story.append(Paragraph("2. 🚨 Real-Time AI Early Warning System Sentinel", h1_style))
+    story.append(Paragraph(
+        "One of the most critical capabilities of DharaniDrishti AI is the <b>Autonomous Real-Time Early Warning Threat Sentinel</b>. "
+        "Unlike legacy portals that record delays months after milestones are missed, DharaniDrishti AI utilizes predictive telemetry "
+        "to flag bottlenecks weeks in advance and prescribe instant legal/administrative interventions.",
+        body_style
+    ))
+
+    # Highlighted Example Box
+    ews_box_data = [
+        [
+            Paragraph("<b>🚨 EARLY WARNING SYSTEM LIVE DETECTION CASE STUDY</b>", ParagraphStyle('EwsH', fontName='Helvetica-Bold', fontSize=8.5, textColor=colors.HexColor("#dc2626")))
+        ],
+        [
+            Paragraph(
+                "<b>⚠️ High Risk Detected:</b><br/>"
+                "<font size=9 color='#0f172a'><b>Project ABC may face a 42-day delay due to unresolved compensation disputes.</b></font><br/><br/>"
+                "• <b>Trigger Rule:</b> <code>Rule #EWS-COMP-42: Compensation Escrow Disbursement Blocked > 40 Days</code><br/>"
+                "• <b>Predicted Delay Overrun:</b> <b>+42 Days</b> on Critical Path Timeline<br/>"
+                "• <b>Root Cause Bottleneck:</b> 14 Land Parcel Compensation Escrow Claims Pending across Palghar & Thane tehsils<br/>"
+                "• <b>Affected Statutory Milestone:</b> Section 23 Award ➔ Section 38 Physical Possession Handover<br/>"
+                "• <b>AI Sentinel Certainty:</b> <b>94.6% Confidence</b> (Ensemble XGBoost + TreeExplainer)<br/>"
+                "• <b>AI Prescribed Remedy:</b> <i>Initiate expedited Special CALA Lok Adalat Bench with 25% consent incentive disbursement to clear 42-day critical path delay.</i><br/>"
+                "• <b>Automated Escalation:</b> Emergency SMS dispatched to District Collector (+91-98765-XXXXX) & pushed to PM GatiShakti NMP Central Desk.",
+                callout_style
+            )
+        ]
+    ]
+    ews_table = Table(ews_box_data, colWidths=[504])
+    ews_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor("#fef2f2")),
+        ('BOX', (0, 0), (-1, -1), 1, colors.HexColor("#fecaca")),
+        ('LINELEFT', (0, 0), (-1, -1), 3.5, CRITICAL_RED),
+        ('TOPPADDING', (0, 0), (-1, -1), 6),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+        ('LEFTPADDING', (0, 0), (-1, -1), 10),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 10),
+    ]))
+    story.append(ews_table)
+    story.append(Spacer(1, 10))
+
+    # =========================================================================
+    # 4. 🌐 COMPETITIVE LANDSCAPE & COMPARATIVE BENCHMARK
+    # =========================================================================
+    story.append(Paragraph("3. 🌐 Competitive Landscape & Comparative Analysis", h1_style))
+    story.append(Paragraph(
+        "DharaniDrishti AI is a first-of-its-kind innovation. The matrix below benchmarks DharaniDrishti AI against existing Indian Government portals and international commercial platforms:",
+        body_style
+    ))
+
+    comp_data = [
+        [
+            Paragraph("Platform / System", table_header),
+            Paragraph("Operating Scope", table_header),
+            Paragraph("What It Does Currently", table_header),
+            Paragraph("Critical Limitations vs DharaniDrishti AI", table_header)
+        ],
+        [
+            Paragraph("<b>Bhoomi Rashi</b><br/>(MoRTH Portal)", table_cell_bold),
+            Paragraph("National Highways Land Acquisition", table_cell),
+            Paragraph("Digitizes statutory Gazette notifications (Section 3A, 3D, 3G under NH Act 1956).", table_cell),
+            Paragraph("<b>Purely reactive record-keeping.</b> No predictive delay ML, no SHAP XAI, no What-If simulation, no GIS multi-layer satellite maps.", table_cell)
+        ],
+        [
+            Paragraph("<b>PM GatiShakti NMP</b><br/>(BISAG-N / DPIIT)", table_cell_bold),
+            Paragraph("National Master Plan GIS Portal", table_cell),
+            Paragraph("Maps 200+ spatial data layers (roads, power, forests, economic zones).", table_cell),
+            Paragraph("<b>Static GIS mapping only.</b> Lacks machine learning delay forecasting, court stay resolution playbooks, and individual citizen parcel lookup.", table_cell)
+        ],
+        [
+            Paragraph("<b>PARIVESH Portal</b><br/>(MoEFCC)", table_cell_bold),
+            Paragraph("Environmental Clearances", table_cell),
+            Paragraph("Single-window workflow for forest, wildlife, and CRZ clearances.", table_cell),
+            Paragraph("<b>Isolated silo.</b> Does not calculate corridor capital-at-risk or correlate forest Stage-II delays to project delivery timelines.", table_cell)
+        ],
+        [
+            Paragraph("<b>e-Courts / NJDG</b><br/>(Ministry of Law)", table_cell_bold),
+            Paragraph("Judicial Case Database", table_cell),
+            Paragraph("Repository of writ petitions across High Courts and District Courts.", table_cell),
+            Paragraph("<b>Raw legal case data.</b> Lacks geospatial linkage to infrastructure alignments and cannot calculate delay impact in days.", table_cell)
+        ],
+        [
+            Paragraph("<b>PRAGATI Portal</b><br/>(PMO Monitoring)", table_cell_bold),
+            Paragraph("High-Level Review Platform", table_cell),
+            Paragraph("Monthly videoconference review chaired by the Prime Minister for stalled projects.", table_cell),
+            Paragraph("<b>Manual retrospective reporting.</b> Relies on quarterly status sheets rather than automated real-time ML anomaly sentinels.", table_cell)
+        ],
+        [
+            Paragraph("<b>US FAST-41 / UK IPA</b><br/>(Global Systems)", table_cell_bold),
+            Paragraph("Federal / National Audits", table_cell),
+            Paragraph("Tracks federal permitting timelines and manual RAG risk scorecards.", table_cell),
+            Paragraph("<b>Manual consultant reviews.</b> Lacks algorithmic SHAP decomposition, real-time What-If physics, and RFCTLARR statutory rules.", table_cell)
+        ],
+        [
+            Paragraph("<b>Palantir / ESRI</b><br/>(Commercial GIS)", table_cell_bold),
+            Paragraph("Enterprise Data Systems", table_cell),
+            Paragraph("Proprietary multi-million dollar general-purpose data platforms.", table_cell),
+            Paragraph("<b>Extremely expensive & unspecialized.</b> Requires heavy custom coding and lacks native Indian cadastral and statutory RFCTLARR engines.", table_cell)
+        ]
+    ]
+
+    comp_table = Table(comp_data, colWidths=[90, 95, 145, 174])
+    comp_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), NAVY),
+        ('BOX', (0, 0), (-1, -1), 0.5, BORDER_CLR),
+        ('INNERGRID', (0, 0), (-1, -1), 0.5, BORDER_CLR),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, SURFACE]),
+        ('TOPPADDING', (0, 0), (-1, -1), 3.5),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 3.5),
+        ('LEFTPADDING', (0, 0), (-1, -1), 5),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 5),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+    ]))
+    story.append(comp_table)
+    story.append(Spacer(1, 10))
+
+    # =========================================================================
+    # 5. TECHNOLOGIES USED & WHY THEY WERE CHOSEN
+    # =========================================================================
+    story.append(Paragraph("4. Technology Stack & Component Justification", h1_style))
     story.append(Paragraph(
         "Every technology chosen in DharaniDrishti AI was selected according to stringent benchmarks of sub-millisecond execution, "
         "zero-dependency reliability, cryptographic immutability, and enterprise scalability:",
@@ -448,19 +546,19 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         ('BOX', (0, 0), (-1, -1), 0.5, BORDER_CLR),
         ('INNERGRID', (0, 0), (-1, -1), 0.5, BORDER_CLR),
         ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, SURFACE]),
-        ('TOPPADDING', (0, 0), (-1, -1), 4),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+        ('TOPPADDING', (0, 0), (-1, -1), 3.5),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 3.5),
         ('LEFTPADDING', (0, 0), (-1, -1), 5),
         ('RIGHTPADDING', (0, 0), (-1, -1), 5),
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
     ]))
     story.append(tech_table)
-    story.append(Spacer(1, 14))
+    story.append(Spacer(1, 10))
 
     # =========================================================================
-    # 4. HOW THE BACKEND & PREDICTIVE PROCESSES WORK
+    # 6. HOW THE BACKEND & PREDICTIVE PROCESSES WORK
     # =========================================================================
-    story.append(Paragraph("3. Backend Processing & Decision Physics Mathematical Model", h1_style))
+    story.append(Paragraph("5. Backend Processing & Decision Physics Mathematical Model", h1_style))
     story.append(Paragraph(
         "The decision engine processes 11 key statutory and geospatial input parameters through non-linear regression matrices "
         "to calculate stage-specific delay risk, financial escalation exposure, and optimal prescriptive playbooks:",
@@ -519,12 +617,12 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         ('RIGHTPADDING', (0, 0), (-1, -1), 8),
     ]))
     story.append(math_table)
-    story.append(Spacer(1, 14))
+    story.append(Spacer(1, 10))
 
     # =========================================================================
-    # 5. REQUIREMENTS & CHANGES FOR INDUSTRY / ENTERPRISE PRODUCTION
+    # 7. REQUIREMENTS & CHANGES FOR INDUSTRY / ENTERPRISE PRODUCTION
     # =========================================================================
-    story.append(Paragraph("4. Production & Industry Deployment Requirements", h1_style))
+    story.append(Paragraph("6. Production & Industry Deployment Requirements", h1_style))
     story.append(Paragraph(
         "To migrate DharaniDrishti AI from the current high-performance client-evaluated platform into a Tier-1 National Government "
         "Enterprise System, the following infrastructure, database, and integration requirements must be deployed:",
@@ -575,19 +673,19 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
         ('BOX', (0, 0), (-1, -1), 0.5, BORDER_CLR),
         ('INNERGRID', (0, 0), (-1, -1), 0.5, BORDER_CLR),
         ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, SURFACE]),
-        ('TOPPADDING', (0, 0), (-1, -1), 4),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+        ('TOPPADDING', (0, 0), (-1, -1), 3.5),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 3.5),
         ('LEFTPADDING', (0, 0), (-1, -1), 5),
         ('RIGHTPADDING', (0, 0), (-1, -1), 5),
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
     ]))
     story.append(prod_table)
-    story.append(Spacer(1, 14))
+    story.append(Spacer(1, 10))
 
     # =========================================================================
-    # 6. STEP-BY-STEP IMPLEMENTATION CHECKLIST
+    # 8. STEP-BY-STEP IMPLEMENTATION CHECKLIST & SIGN-OFF
     # =========================================================================
-    story.append(Paragraph("5. Step-by-Step Enterprise Rollout Checklist", h1_style))
+    story.append(Paragraph("7. Step-by-Step Enterprise Rollout Checklist", h1_style))
     
     checklist_items = [
         "<b>Phase 1: Backend Spatial Decoupling (Weeks 1-4):</b> Provision PostgreSQL + PostGIS cluster on MeitY-empaneled cloud; ingest cadastral survey vectors for initial pilot states (Maharashtra, Gujarat, Uttar Pradesh).",
@@ -600,7 +698,7 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
     for item in checklist_items:
         story.append(Paragraph(f"• {item}", bullet_style))
 
-    story.append(Spacer(1, 14))
+    story.append(Spacer(1, 10))
 
     # Sign-off Box
     signoff_data = [
