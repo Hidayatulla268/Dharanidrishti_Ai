@@ -55,9 +55,9 @@ export const ParliamentAnimatedArt: React.FC<ParliamentAnimatedArtProps> = ({ cl
           data[i + 3] = alpha;
 
           // Boost golden neon vibrancy on lines
-          data[i] = Math.min(255, Math.round(r * 1.25 + 20));     // Red
-          data[i + 1] = Math.min(255, Math.round(g * 1.15 + 10)); // Green
-          data[i + 2] = Math.min(255, Math.round(b * 0.6));       // Blue
+          data[i] = Math.min(255, Math.round(r * 1.2 + 15));     // Red
+          data[i + 1] = Math.min(255, Math.round(g * 1.1 + 8));  // Green
+          data[i + 2] = Math.min(255, Math.round(b * 0.6));      // Blue
         }
       }
 
@@ -76,23 +76,23 @@ export const ParliamentAnimatedArt: React.FC<ParliamentAnimatedArtProps> = ({ cl
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        maxWidth: '420px',
+        maxWidth: '540px',
         width: '100%',
-        minHeight: '130px',
+        minHeight: '155px',
         userSelect: 'none',
         overflow: 'visible'
       }}
     >
-      {/* 1. Subtle Radial Golden Glow Behind the Golden Lines */}
+      {/* 1. Subtle, Gentle Radial Glow Behind Golden Lines (Toned down) */}
       <div 
         style={{
           position: 'absolute',
-          inset: '-10px',
+          inset: '-8px',
           background: isHovered 
-            ? 'radial-gradient(ellipse at center, rgba(245, 158, 11, 0.35) 0%, rgba(251, 191, 36, 0.15) 50%, transparent 75%)'
-            : 'radial-gradient(ellipse at center, rgba(245, 158, 11, 0.22) 0%, rgba(251, 191, 36, 0.08) 50%, transparent 75%)',
-          filter: 'blur(16px)',
-          transition: 'all 0.5s ease-out',
+            ? 'radial-gradient(ellipse at center, rgba(245, 158, 11, 0.18) 0%, rgba(251, 191, 36, 0.08) 50%, transparent 75%)'
+            : 'radial-gradient(ellipse at center, rgba(245, 158, 11, 0.12) 0%, rgba(251, 191, 36, 0.04) 50%, transparent 75%)',
+          filter: 'blur(14px)',
+          transition: 'all 0.4s ease-out',
           pointerEvents: 'none',
           zIndex: 0
         }} 
@@ -116,10 +116,10 @@ export const ParliamentAnimatedArt: React.FC<ParliamentAnimatedArtProps> = ({ cl
           justifyContent: 'center',
           zIndex: 2,
           transition: 'transform 0.4s ease-out, filter 0.4s ease-out',
-          transform: isHovered ? 'scale(1.03) translateY(-2px)' : 'scale(1)',
+          transform: isHovered ? 'scale(1.02) translateY(-1px)' : 'scale(1)',
           filter: isHovered 
-            ? 'drop-shadow(0 0 14px rgba(245, 158, 11, 0.75)) drop-shadow(0 0 3px #fbbf24)'
-            : 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.45))',
+            ? 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.35))'
+            : 'drop-shadow(0 0 5px rgba(245, 158, 11, 0.22))',
           opacity: isLoaded ? 1 : 0.4
         }}
       >
@@ -128,57 +128,81 @@ export const ParliamentAnimatedArt: React.FC<ParliamentAnimatedArtProps> = ({ cl
           style={{
             width: '100%',
             height: 'auto',
-            maxHeight: '135px',
+            maxHeight: '165px',
             objectFit: 'contain',
             display: 'block'
           }}
         />
 
-        {/* 4. Animated Diagonal Light Sweep Beam across the golden colonnades */}
+        {/* 4. Animated Diagonal Light Sweep Beam */}
         <div className="shimmer-sweep-beam" />
 
-        {/* 5. Animated Waving Indian Tricolor Flag on Rashtrapati Bhavan Spire */}
+        {/* 5. Animated Waving Indian Tricolor Flag with Gold Border */}
         <div 
           className="flag-waving-container"
           style={{
             position: 'absolute',
-            top: '4%',
-            right: '25.5%',
+            top: '4.5%',
+            right: '25.6%',
             pointerEvents: 'none',
             zIndex: 4
           }}
         >
-          <svg width="34" height="24" viewBox="0 0 34 24" fill="none">
+          <svg width="38" height="28" viewBox="0 0 38 28" fill="none">
+            {/* Animated Flag with Golden Border Outline */}
             <g className="waving-flag-group">
+              {/* Outer Golden Border & Background */}
               <path 
-                d="M 0,1 C 9,-2 18,4 30,1 C 30,5 30,6 30,8 C 18,11 9,5 0,8 Z" 
+                d="M 0,1 C 10,-2 20,4 34,1 L 34,22 C 20,25 10,19 0,22 Z" 
+                fill="none" 
+                stroke="#fbbf24" 
+                strokeWidth="1.2" 
+                strokeLinejoin="round" 
+              />
+
+              {/* Saffron Stripe with Gold Border */}
+              <path 
+                d="M 0,1 C 10,-2 20,4 34,1 L 34,8 C 20,11 10,5 0,8 Z" 
                 fill="#ff9933" 
+                stroke="#fbbf24" 
+                strokeWidth="0.6" 
               />
+
+              {/* White Stripe with Gold Border */}
               <path 
-                d="M 0,8 C 9,5 18,11 30,8 C 30,12 30,13 30,15 C 18,18 9,12 0,15 Z" 
+                d="M 0,8 C 10,5 20,11 34,8 L 34,15 C 20,18 10,12 0,15 Z" 
                 fill="#ffffff" 
+                stroke="#fbbf24" 
+                strokeWidth="0.6" 
               />
+
+              {/* Green Stripe with Gold Border */}
               <path 
-                d="M 0,15 C 9,12 18,18 30,15 C 30,19 30,20 30,22 C 18,25 9,19 0,22 Z" 
+                d="M 0,15 C 10,12 20,18 34,15 L 34,22 C 20,25 10,19 0,22 Z" 
                 fill="#138808" 
+                stroke="#fbbf24" 
+                strokeWidth="0.6" 
               />
-              <circle cx="15" cy="11.5" r="2.2" stroke="#000088" strokeWidth="0.8" fill="none" />
+
+              {/* Ashoka Chakra */}
+              <circle cx="17" cy="11.5" r="2.4" stroke="#000088" strokeWidth="0.9" fill="none" />
+              <circle cx="17" cy="11.5" r="0.6" fill="#000088" />
             </g>
           </svg>
         </div>
 
-        {/* 6. Glowing Golden Beacon Pulse at Spire Tip */}
+        {/* 6. Subtle Golden Beacon Pulse at Spire Tip */}
         <div 
           style={{
             position: 'absolute',
-            top: '4.5%',
+            top: '5%',
             right: '28%',
-            width: '5px',
-            height: '5px',
+            width: '4px',
+            height: '4px',
             borderRadius: '50%',
             background: '#fbbf24',
-            boxShadow: '0 0 10px #fbbf24, 0 0 18px #f59e0b',
-            animation: 'beaconPulse 2.2s infinite ease-in-out',
+            boxShadow: '0 0 8px #fbbf24',
+            animation: 'beaconPulse 2.5s infinite ease-in-out',
             pointerEvents: 'none',
             zIndex: 5
           }}
