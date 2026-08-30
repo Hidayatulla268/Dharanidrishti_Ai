@@ -32,7 +32,7 @@ import {
 } from 'lucide-react';
 import { LandAcquisitionProject, RiskCategory, ProjectAgency, AcquisitionStage, UserRole } from '../types';
 import { PERSONA_CONFIGS, PersonaDetails } from '../data/personaConfig';
-import parliamentGlowSvg from '../assets/parliament-glow.svg';
+import parliamentImg from '../assets/parliament_glow.jpg';
 
 interface DashboardViewProps {
   projects: LandAcquisitionProject[];
@@ -122,8 +122,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
       {/* 2. Hero Perspective Banner with Parliament Illustration */}
       <div className="hero-perspective-banner">
-        <div style={{ position: 'relative', zIndex: 2, maxWidth: '720px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px', flexWrap: 'wrap' }}>
+        {/* Banner Top Row */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '12px', flexWrap: 'wrap', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
             <span style={{ 
               fontSize: '0.68rem', 
               fontWeight: 800, 
@@ -142,17 +143,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </span>
           </div>
 
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em' }}>
-            {persona.title}
-          </h2>
-          
-          <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', marginTop: '6px', lineHeight: 1.4 }}>
-            {persona.statutoryMandate}
-          </p>
-        </div>
-
-        {/* Right Gold Action Tag */}
-        <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
           <button
             style={{
               padding: '6px 14px',
@@ -174,12 +164,35 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </button>
         </div>
 
-        {/* Parliament Glowing SVG Background Art */}
-        <img 
-          src={parliamentGlowSvg} 
-          alt="Parliament Illustration" 
-          className="hero-parliament-art" 
-        />
+        {/* Banner Content Body (Text Left + Art Right) */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '20px', flexWrap: 'wrap' }}>
+          <div style={{ flex: '1 1 500px', maxWidth: '680px' }}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em' }}>
+              {persona.title}
+            </h2>
+            
+            <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', marginTop: '6px', lineHeight: 1.45 }}>
+              {persona.statutoryMandate}
+            </p>
+          </div>
+
+          {/* Parliament Artwork Container */}
+          <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img 
+              src={parliamentImg} 
+              alt="Indian Parliament & Rashtrapati Bhavan" 
+              style={{
+                height: '115px',
+                width: 'auto',
+                maxWidth: '300px',
+                objectFit: 'contain',
+                borderRadius: '8px',
+                filter: 'drop-shadow(0 0 16px rgba(245, 158, 11, 0.45))',
+                opacity: 0.95
+              }}
+            />
+          </div>
+        </div>
       </div>
 
       {/* 3. Five-Column KPI Cards Grid matching the screenshot */}
