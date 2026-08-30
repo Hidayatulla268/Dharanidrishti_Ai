@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     
     <!-- Security Headers & Content Security Policy (CSP) -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://maps.googleapis.com https://maps.gstatic.com; connect-src 'self' https://maps.googleapis.com https://api.dharanidrishti.gov.in https://nmp.gatishakti.gov.in https://bhoomirashi.gov.in; object-src 'none'; base-uri 'self'; form-action 'self';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob: 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://maps.googleapis.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https: http: blob:; object-src 'none'; base-uri 'self';" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     
@@ -24,18 +24,18 @@
     <meta property="og:url" content="https://dharanidrishti.gov.in/" />
     <meta property="og:title" content="DharaniDrishti AI | Predictive Analytics System for Land Acquisition Delays" />
     <meta property="og:description" content="AI-powered Predictive Analytics & Decision Support System for early forecasting of land acquisition delays across national infrastructure projects with Explainable AI (XAI) and GIS digital mapping." />
-    <meta property="og:image" content="/assets/parliament_glow.jpg" />
+    <meta property="og:image" content="./assets/parliament_glow.jpg" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content="DharaniDrishti AI | Land Acquisition Predictive Analytics" />
     <meta property="twitter:description" content="Forecasting land acquisition statutory delays and optimizing inter-departmental clearances under PM GatiShakti National Master Plan." />
-    <meta property="twitter:image" content="/assets/parliament_glow.jpg" />
+    <meta property="twitter:image" content="./assets/parliament_glow.jpg" />
 
     <!-- PWA & Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
-    <link rel="apple-touch-icon" href="/public/icons.svg" />
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./icons.svg" />
+    <link rel="manifest" href="./manifest.json" />
 
     <!-- Google Fonts: Inter, Outfit, JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
