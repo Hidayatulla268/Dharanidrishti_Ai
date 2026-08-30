@@ -497,6 +497,53 @@ html, body {
   animation: particleFloat 3.6s infinite ease-in-out 1.7s;
 }
 
+/* Shimmer Sweep Light Beam */
+@keyframes sweepLight {
+  0% {
+    transform: translateX(-150%) skewX(-25deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateX(250%) skewX(-25deg);
+    opacity: 0;
+  }
+}
+
+.shimmer-sweep-beam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  background: linear-gradient(90deg, transparent 0%, rgba(251, 191, 36, 0.4) 50%, transparent 100%);
+  animation: sweepLight 4.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  mix-blend-mode: screen;
+  z-index: 3;
+}
+
+@keyframes beaconPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.75;
+    box-shadow: 0 0 6px #fbbf24;
+  }
+  50% {
+    transform: scale(1.6);
+    opacity: 1;
+    box-shadow: 0 0 16px #fbbf24, 0 0 28px #f59e0b;
+  }
+}
+
 /* KPI 5-Column Grid */
 .kpi-5-grid {
   display: grid;
