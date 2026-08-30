@@ -206,7 +206,17 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
         tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
       }
 
-      L.tileLayer(tileUrl, { maxZoom: 18 }).addTo(map);
+      L.tileLayer(tileUrl, { maxZoom: 18, attribution: '&copy; OpenStreetMap contributors, CartoDB' }).addTo(map);
+
+      map.whenReady(() => {
+        map.invalidateSize();
+      });
+
+      setTimeout(() => {
+        if (leafletMapRef.current) {
+          leafletMapRef.current.invalidateSize();
+        }
+      }, 200);
     }
 
     return () => {
@@ -526,7 +536,19 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '20px' }}>
         {/* Map Container */}
         <div style={{ position: 'relative' }}>
-          <div ref={containerRef} className="map-viewport" />
+          <div 
+            ref={containerRef} 
+            className="map-viewport" 
+            style={{ 
+              width: '100%', 
+              height: '640px', 
+              minHeight: '560px', 
+              background: '#080c17', 
+              borderRadius: 'var(--radius-lg)', 
+              overflow: 'hidden',
+              border: '1px solid var(--border-medium)'
+            }} 
+          />
 
           {/* Floating Legend */}
           <div style={{

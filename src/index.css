@@ -794,3 +794,30 @@ html, body {
   max-width: 650px;
   box-shadow: var(--shadow-xl);
 }
+
+/* GIS Map Viewport & Leaflet Container */
+.map-viewport {
+  width: 100%;
+  height: 640px;
+  min-height: 560px;
+  background: #080c17;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-medium);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 1;
+}
+
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+  background: #080c17 !important;
+  font-family: var(--font-sans) !important;
+}
+
+.custom-leaflet-pin {
+  background: transparent;
+  border: none;
+}
+
