@@ -1,0 +1,81 @@
+<svg width="360" height="150" viewBox="0 0 360 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.85"/>
+      <stop offset="50%" stop-color="#fbbf24" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#d97706" stop-opacity="0.15"/>
+    </linearGradient>
+    <linearGradient id="pillarGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.3"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Flagpole & Tricolor -->
+  <line x1="180" y1="12" x2="180" y2="40" stroke="#f59e0b" stroke-width="2"/>
+  <rect x="180" y="12" width="16" height="4" fill="#ff9933"/>
+  <rect x="180" y="16" width="16" height="4" fill="#ffffff"/>
+  <rect x="180" y="20" width="16" height="4" fill="#138808"/>
+  <circle cx="188" cy="18" r="1.5" fill="#000088"/>
+
+  <!-- Main Central Dome -->
+  <path d="M 152 58 C 152 38, 208 38, 208 58 Z" fill="none" stroke="url(#goldGlow)" stroke-width="2" filter="url(#glow)"/>
+  <path d="M 160 58 C 160 44, 200 44, 200 58 Z" fill="none" stroke="#fbbf24" stroke-width="1.2"/>
+  <line x1="180" y1="36" x2="180" y2="44" stroke="#f59e0b" stroke-width="2"/>
+  <circle cx="180" cy="35" r="2.5" fill="#fbbf24"/>
+
+  <!-- Dome Base & Cornice -->
+  <rect x="146" y="58" width="68" height="6" rx="1" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+  <line x1="154" y1="64" x2="154" y2="76" stroke="#fbbf24" stroke-width="1.2"/>
+  <line x1="164" y1="64" x2="164" y2="76" stroke="#fbbf24" stroke-width="1.2"/>
+  <line x1="174" y1="64" x2="174" y2="76" stroke="#fbbf24" stroke-width="1.2"/>
+  <line x1="186" y1="64" x2="186" y2="76" stroke="#fbbf24" stroke-width="1.2"/>
+  <line x1="196" y1="64" x2="196" y2="76" stroke="#fbbf24" stroke-width="1.2"/>
+  <line x1="206" y1="64" x2="206" y2="76" stroke="#fbbf24" stroke-width="1.2"/>
+  <rect x="142" y="76" width="76" height="5" rx="1" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+
+  <!-- Central Portico Columns -->
+  <line x1="150" y1="81" x2="150" y2="122" stroke="url(#pillarGrad)" stroke-width="2.5"/>
+  <line x1="162" y1="81" x2="162" y2="122" stroke="url(#pillarGrad)" stroke-width="2.5"/>
+  <line x1="174" y1="81" x2="174" y2="122" stroke="url(#pillarGrad)" stroke-width="2.5"/>
+  <line x1="186" y1="81" x2="186" y2="122" stroke="url(#pillarGrad)" stroke-width="2.5"/>
+  <line x1="198" y1="81" x2="198" y2="122" stroke="url(#pillarGrad)" stroke-width="2.5"/>
+  <line x1="210" y1="81" x2="210" y2="122" stroke="url(#pillarGrad)" stroke-width="2.5"/>
+
+  <!-- Left Wing & Colonnade -->
+  <rect x="30" y="80" width="112" height="6" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+  <line x1="40" y1="86" x2="40" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="52" y1="86" x2="52" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="64" y1="86" x2="64" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="76" y1="86" x2="76" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="88" y1="86" x2="88" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="100" y1="86" x2="100" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="112" y1="86" x2="112" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="124" y1="86" x2="124" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="136" y1="86" x2="136" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+
+  <!-- Right Wing & Colonnade -->
+  <rect x="218" y="80" width="112" height="6" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+  <line x1="224" y1="86" x2="224" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="236" y1="86" x2="236" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="248" y1="86" x2="248" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="260" y1="86" x2="260" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="272" y1="86" x2="272" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="284" y1="86" x2="284" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="296" y1="86" x2="296" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="308" y1="86" x2="308" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+  <line x1="320" y1="86" x2="320" y2="122" stroke="url(#pillarGrad)" stroke-width="2"/>
+
+  <!-- Base Steps Plinth -->
+  <rect x="20" y="122" width="320" height="4" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+  <rect x="10" y="126" width="340" height="4" fill="none" stroke="#f59e0b" stroke-width="1.2"/>
+  <line x1="0" y1="130" x2="360" y2="130" stroke="url(#goldGlow)" stroke-width="2"/>
+
+  <!-- Subtle glow rays -->
+  <line x1="360" y1="130" x2="300" y2="148" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3 3" opacity="0.4"/>
+  <line x1="360" y1="120" x2="270" y2="148" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3 3" opacity="0.3"/>
+</svg>
