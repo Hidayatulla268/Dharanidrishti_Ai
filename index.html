@@ -45,20 +45,7 @@
     <!-- Leaflet GIS Base Stylesheet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
-    <!-- Dynamic Google Maps JS Platform Loader (Loads only when VITE_GOOGLE_MAPS_API_KEY is configured in .env) -->
-    <script>
-      (function() {
-        const apiKey = "%VITE_GOOGLE_MAPS_API_KEY%";
-        if (apiKey && !apiKey.startsWith("%") && apiKey !== "your_google_maps_api_key_here" && apiKey.trim() !== "") {
-          const script = document.createElement("script");
-          script.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(apiKey) + "&libraries=places,geometry";
-          script.async = true;
-          script.defer = true;
-          document.head.appendChild(script);
-        }
-      })();
-    </script>
-    <script type="module" crossorigin src="./assets/index-BMZQiZZS.js"></script>
+    <script type="module" crossorigin src="./assets/index-Kty7ZdYq.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/rolldown-runtime-CbXtAM7H.js">
     <link rel="modulepreload" crossorigin href="./assets/vendor-libs-CKZYeMQL.js">
     <link rel="modulepreload" crossorigin href="./assets/vendor-react-f0k1kPdL.js">
