@@ -48,7 +48,7 @@
     <!-- Dynamic Google Maps JS Platform Loader (Loads only when VITE_GOOGLE_MAPS_API_KEY is configured in .env) -->
     <script>
       (function() {
-        const apiKey = "AIzaSyDiMygvkgArd-Jexwuf1OZJ74PRlk2anik";
+        const apiKey = "%VITE_GOOGLE_MAPS_API_KEY%";
         if (apiKey && !apiKey.startsWith("%") && apiKey !== "your_google_maps_api_key_here" && apiKey.trim() !== "") {
           const script = document.createElement("script");
           script.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(apiKey) + "&libraries=places,geometry";
