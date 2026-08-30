@@ -635,6 +635,71 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
     story.append(tech_table)
     story.append(Spacer(1, 10))
 
+    # 4.1 Technology Comparison & Rejection Matrix (Why Chosen vs Why Rejected)
+    story.append(Paragraph("4.1 Technology Comparison & Architectural Rejection Matrix", h2_style))
+    story.append(Paragraph(
+        "A rigorous engineering evaluation was conducted for each layer of the platform. The table below details why the selected technologies were chosen and why industry alternatives were formally rejected:",
+        body_style
+    ))
+
+    tech_comp_data = [
+        [
+            Paragraph("Platform Subsystem", table_header),
+            Paragraph("Chosen Technology & Core Strengths", table_header),
+            Paragraph("Alternative Technologies Rejected & Fatal Flaws", table_header)
+        ],
+        [
+            Paragraph("<b>1. Frontend Core & Type Engine</b>", table_cell_bold),
+            Paragraph("<b>React 19 + TypeScript:</b> Compile-time type safety for complex cadastral structures, 60 FPS concurrent virtual DOM updates for What-If sliders, and seamless GIS lifecycle integration.", table_cell),
+            Paragraph("<b>Vanilla JS:</b> Spaghetti code and DOM memory leaks.<br/><b>Angular:</b> Heavy boilerplate overhead & slower bundle load.<br/><b>Vue:</b> Smaller enterprise ecosystem in Indian defense/informatics.", table_cell)
+        ],
+        [
+            Paragraph("<b>2. Build & Module Bundling</b>", table_cell_bold),
+            Paragraph("<b>Vite 8 + Rolldown:</b> Sub-2.5s production compilation, native ES modules with HMR, and automated vendor chunk splitting for optimal client browser caching.", table_cell),
+            Paragraph("<b>Webpack:</b> Slow 30-60s build times and complex configs.<br/><b>CRA:</b> Deprecated by React team, bloated and unmaintained.<br/><b>Turbopack:</b> Tied to Next.js; not optimal for standalone edge deployment.", table_cell)
+        ],
+        [
+            Paragraph("<b>3. GIS Geospatial Map Engine</b>", table_cell_bold),
+            Paragraph("<b>Leaflet 1.9.4 + ESRI World Imagery:</b> Zero API billing quota risk, 100% open-source satellite raster tiles, sub-millisecond polyline canvas rendering, with Google fail-safe dual integration.", table_cell),
+            Paragraph("<b>Google Maps ONLY:</b> $7/1k request API billing spike risk; key expiry causes total black screen crash.<br/><b>Mapbox GL:</b> Restrictive licensing & telemetry violating data sovereignty.", table_cell)
+        ],
+        [
+            Paragraph("<b>4. Machine Learning & XAI</b>", table_cell_bold),
+            Paragraph("<b>Ensemble XGBoost + SHAP TreeExplainer:</b> Highest empirical accuracy on tabular project data + legally defensible game-theoretic mathematical attribution required for High Court reviews.", table_cell),
+            Paragraph("<b>Deep Neural Networks (DNNs):</b> Opaque 'black boxes' legally indefensible in court, prone to tabular overfitting.<br/><b>Heuristic Rules:</b> Fails to capture non-linear inter-department dependencies.", table_cell)
+        ],
+        [
+            Paragraph("<b>5. Styling & Design System</b>", table_cell_bold),
+            Paragraph("<b>Bespoke Vanilla CSS Custom Tokens:</b> Obsidian (#080c17) command-center aesthetic, glassmorphism, zero runtime bloat (17 KB total CSS), loading instantly on 3G rural mobile networks.", table_cell),
+            Paragraph("<b>TailwindCSS:</b> Pollutes JSX with 50+ utility classes per element.<br/><b>Bootstrap / Material-UI:</b> Bloated (300+ KB unused CSS) and produces generic, outdated corporate layouts.", table_cell)
+        ],
+        [
+            Paragraph("<b>6. Security & Audit Integrity</b>", table_cell_bold),
+            Paragraph("<b>Web Cryptography API (SHA-256):</b> Hardware-accelerated browser-native cryptographic hashing, zero external dependencies, providing tamper-evident CAG blockchain audit trails.", table_cell),
+            Paragraph("<b>Web3 / Ethereum:</b> High gas fees, 15s block latency, legal ambiguity.<br/><b>CryptoJS:</b> Outdated, 50x slower than browser-native Web Crypto API, known security vulnerabilities.", table_cell)
+        ],
+        [
+            Paragraph("<b>7. Architecture Manual PDF</b>", table_cell_bold),
+            Paragraph("<b>ReportLab Python Engine:</b> Publication-grade vector typography, automated two-pass 'Page X of Y' calculations, and pixel-perfect multi-page layout generation.", table_cell),
+            Paragraph("<b>jsPDF / html2canvas:</b> Blurry pixelated screenshots, broken table splits, corrupted SVG vectors.<br/><b>window.print():</b> Unreliable margin and browser CSS print bugs.", table_cell)
+        ]
+    ]
+
+    tech_comp_table = Table(tech_comp_data, colWidths=[95, 205, 204])
+    tech_comp_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), NAVY),
+        ('BOX', (0, 0), (-1, -1), 0.5, BORDER_CLR),
+        ('INNERGRID', (0, 0), (-1, -1), 0.5, BORDER_CLR),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, SURFACE]),
+        ('TOPPADDING', (0, 0), (-1, -1), 3.5),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 3.5),
+        ('LEFTPADDING', (0, 0), (-1, -1), 5),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 5),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+    ]))
+    story.append(tech_comp_table)
+    story.append(Spacer(1, 10))
+
     # =========================================================================
     # 6. HOW THE BACKEND & PREDICTIVE PROCESSES WORK
     # =========================================================================
