@@ -46,7 +46,7 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
   
   const [selectedRiskFilter, setSelectedRiskFilter] = useState<string>('ALL');
   const [selectedStateFilter, setSelectedStateFilter] = useState<string>('ALL');
-  const [tileLayerType, setTileLayerType] = useState<'DARK' | 'SATELLITE' | 'STREET'>('DARK');
+  const [tileLayerType, setTileLayerType] = useState<'VOYAGER' | 'SATELLITE' | 'STREET' | 'DARK'>('VOYAGER');
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -266,7 +266,7 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
         leafletMapRef.current = map;
         leafletPolylineRef.current = L.layerGroup().addTo(map);
 
-        let tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+        let tileUrl = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
         let subdomains: string | string[] = 'abcd';
         if (tileLayerType === 'SATELLITE') {
           tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
@@ -274,6 +274,9 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
         } else if (tileLayerType === 'STREET') {
           tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
           subdomains = 'abc';
+        } else if (tileLayerType === 'DARK') {
+          tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+          subdomains = 'abcd';
         }
 
         L.tileLayer(tileUrl, { 
@@ -624,7 +627,63 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
                 Terrain
               </button>
             </div>
-          ) : null}
+          ) : (
+            /* Leaflet GIS Engine Layer Switcher */
+            <div style={{ display: 'flex', background: 'var(--bg-surface)', padding: '3px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-medium)' }}>
+              <button
+                onClick={() => setTileLayerType('VOYAGER')}
+                style={{
+                  padding: '5px 9px',
+                  borderRadius: 'var(--radius-sm)',
+                  fontSize: '0.72rem',
+                  fontWeight: 600,
+                  background: tileLayerType === 'VOYAGER' ? 'var(--primary-600)' : 'transparent',
+                  color: tileLayerType === 'VOYAGER' ? '#ffffff' : 'var(--text-secondary)'
+                }}
+              >
+                🗺️ Vibrant Map
+              </button>
+              <button
+                onClick={() => setTileLayerType('SATELLITE')}
+                style={{
+                  padding: '5px 9px',
+                  borderRadius: 'var(--radius-sm)',
+                  fontSize: '0.72rem',
+                  fontWeight: 600,
+                  background: tileLayerType === 'SATELLITE' ? 'var(--primary-600)' : 'transparent',
+                  color: tileLayerType === 'SATELLITE' ? '#ffffff' : 'var(--text-secondary)'
+                }}
+              >
+                🛰️ Satellite
+              </button>
+              <button
+                onClick={() => setTileLayerType('STREET')}
+                style={{
+                  padding: '5px 9px',
+                  borderRadius: 'var(--radius-sm)',
+                  fontSize: '0.72rem',
+                  fontWeight: 600,
+                  background: tileLayerType === 'STREET' ? 'var(--primary-600)' : 'transparent',
+                  color: tileLayerType === 'STREET' ? '#ffffff' : 'var(--text-secondary)'
+                }}
+              >
+                🛣️ Streets
+              </button>
+              <button
+                onClick={() => setTileLayerType('DARK')}
+                style={{
+                  padding: '5px 9px',
+                  borderRadius: 'var(--radius-sm)',
+                  fontSize: '0.72rem',
+                  fontWeight: 600,
+                  background: tileLayerType === 'DARK' ? 'var(--primary-600)' : 'transparent',
+                  color: tileLayerType === 'DARK' ? '#ffffff' : 'var(--text-secondary)'
+                }}
+              >
+                🌑 Dark Cyber
+              </button>
+            </div>
+          )}
 
           {/* Traffic Toggle */}
           {mapProvider === 'GOOGLE_MAPS' && (

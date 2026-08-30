@@ -816,9 +816,9 @@ html, body {
   font-family: var(--font-sans) !important;
 }
 
-/* Dark theme filter tuning for base tiles */
+/* Crisp natural tile rendering */
 .leaflet-tile {
-  filter: brightness(0.92) contrast(1.15) saturate(1.05);
+  filter: none !important;
 }
 
 /* Leaflet Zoom Control Styling */
