@@ -25,6 +25,16 @@ export const ReportGeneratorModal: React.FC<ReportGeneratorModalProps> = ({
   projects,
   modelMetrics
 }) => {
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const criticalProjects = projects.filter(p => p.riskCategory === 'CRITICAL' || p.riskCategory === 'HIGH');

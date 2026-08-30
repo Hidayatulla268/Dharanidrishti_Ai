@@ -47,6 +47,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const [selectedAgency, setSelectedAgency] = useState<string>('ALL');
   const [inspectModalProject, setInspectModalProject] = useState<LandAcquisitionProject | null>(null);
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && inspectModalProject) {
+        setInspectModalProject(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [inspectModalProject]);
+
   const persona: PersonaDetails = PERSONA_CONFIGS[currentRole];
 
   // Compute Global Aggregates
