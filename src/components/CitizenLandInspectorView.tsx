@@ -33,6 +33,8 @@ declare global {
   }
 }
 
+import L from 'leaflet';
+
 interface CitizenLandInspectorViewProps {
   onOpenReport?: () => void;
 }
@@ -44,6 +46,8 @@ export const CitizenLandInspectorView: React.FC<CitizenLandInspectorViewProps> =
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const googleMapRef = useRef<any>(null);
   const activeMarkerRef = useRef<any>(null);
+  const leafletMapRef = useRef<L.Map | null>(null);
+  const leafletMarkerRef = useRef<L.Marker | null>(null);
 
   // Quick Preset Samples
   const presetSamples = [
@@ -61,6 +65,8 @@ export const CitizenLandInspectorView: React.FC<CitizenLandInspectorViewProps> =
     if (googleMapRef.current && window.google?.maps) {
       googleMapRef.current.panTo({ lat: result.latitude, lng: result.longitude });
       googleMapRef.current.setZoom(10);
+    } else if (leafletMapRef.current) {
+      leafletMapRef.current.flyTo([result.latitude, result.longitude], 10, { duration: 1 });
     }
   };
 
@@ -95,41 +101,88 @@ export const CitizenLandInspectorView: React.FC<CitizenLandInspectorViewProps> =
         setActiveParcel(clickedParcel);
         setSearchQuery(`${clickedParcel.khasraGatNumber}, ${clickedParcel.district}`);
       });
+    } else {
+      // Leaflet High-Res Fallback
+      if (leafletMapRef.current) {
+        leafletMapRef.current.remove();
+      }
+
+      const map = L.map(mapContainerRef.current, {
+        center: [activeParcel.latitude, activeParcel.longitude],
+        zoom: 9,
+        zoomControl: true
+      });
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 18,
+        attribution: '&copy; OpenStreetMap, CartoDB'
+      }).addTo(map);
+
+      map.on('click', (e: L.LeafletMouseEvent) => {
+        const clickedParcel = findOrCreateParcelForLocation(e.latlng.lat, e.latlng.lng);
+        setActiveParcel(clickedParcel);
+        setSearchQuery(`${clickedParcel.khasraGatNumber}, ${clickedParcel.district}`);
+      });
+
+      leafletMapRef.current = map;
     }
+
+    return () => {
+      if (leafletMapRef.current) {
+        leafletMapRef.current.remove();
+        leafletMapRef.current = null;
+      }
+    };
   }, []);
 
   // Update Marker when active parcel changes
   useEffect(() => {
-    if (!googleMapRef.current || !window.google?.maps) return;
-
-    if (activeMarkerRef.current) {
-      activeMarkerRef.current.setMap(null);
-    }
-
     const pinColor = activeParcel.isUnderLitigation ? '#ef4444' : '#10b981';
 
-    const marker = new window.google.maps.Marker({
-      position: { lat: activeParcel.latitude, lng: activeParcel.longitude },
-      map: googleMapRef.current,
-      title: activeParcel.khasraGatNumber,
-      icon: {
-        path: window.google.maps.SymbolPath.CIRCLE,
-        fillColor: pinColor,
-        fillOpacity: 0.95,
-        scale: 14,
-        strokeColor: '#ffffff',
-        strokeWeight: 2
-      },
-      label: {
-        text: activeParcel.isUnderLitigation ? '⚠️' : '✓',
-        color: '#ffffff',
-        fontSize: '11px',
-        fontWeight: 'bold'
+    if (googleMapRef.current && window.google?.maps) {
+      if (activeMarkerRef.current) {
+        activeMarkerRef.current.setMap(null);
       }
-    });
 
-    activeMarkerRef.current = marker;
-    googleMapRef.current.panTo({ lat: activeParcel.latitude, lng: activeParcel.longitude });
+      const marker = new window.google.maps.Marker({
+        position: { lat: activeParcel.latitude, lng: activeParcel.longitude },
+        map: googleMapRef.current,
+        title: activeParcel.khasraGatNumber,
+        icon: {
+          path: window.google.maps.SymbolPath.CIRCLE,
+          fillColor: pinColor,
+          fillOpacity: 0.95,
+          scale: 14,
+          strokeColor: '#ffffff',
+          strokeWeight: 2
+        },
+        label: {
+          text: activeParcel.isUnderLitigation ? '⚠️' : '✓',
+          color: '#ffffff',
+          fontSize: '11px',
+          fontWeight: 'bold'
+        }
+      });
+
+      activeMarkerRef.current = marker;
+      googleMapRef.current.panTo({ lat: activeParcel.latitude, lng: activeParcel.longitude });
+    } else if (leafletMapRef.current) {
+      if (leafletMarkerRef.current) {
+        leafletMarkerRef.current.remove();
+      }
+
+      const customIcon = L.divIcon({
+        className: 'custom-leaflet-pin',
+        html: `<div style="width:34px;height:34px;background:${pinColor};border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;box-shadow:0 0 16px ${pinColor};cursor:pointer;">${activeParcel.isUnderLitigation ? '⚠️' : '✓'}</div>`,
+        iconSize: [34, 34],
+        iconAnchor: [17, 17]
+      });
+
+      const marker = L.marker([activeParcel.latitude, activeParcel.longitude], { icon: customIcon }).addTo(leafletMapRef.current);
+      marker.bindPopup(`<b>${activeParcel.khasraGatNumber}</b><br/>${activeParcel.village}, ${activeParcel.district}<br/>Owner: ${activeParcel.registeredOwnerName}`).openPopup();
+      leafletMarkerRef.current = marker;
+      leafletMapRef.current.panTo([activeParcel.latitude, activeParcel.longitude]);
+    }
   }, [activeParcel]);
 
   const progress = activeParcel.registrationProgress;

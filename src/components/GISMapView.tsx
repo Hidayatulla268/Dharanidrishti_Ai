@@ -32,10 +32,13 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
   onSelectProject,
   onNavigateToXai
 }) => {
-  const [mapProvider, setMapProvider] = useState<'GOOGLE_MAPS' | 'LEAFLET'>('GOOGLE_MAPS');
+  const hasGoogleMaps = typeof window !== 'undefined' && !!(window as any).google?.maps;
+  const [mapProvider, setMapProvider] = useState<'GOOGLE_MAPS' | 'LEAFLET'>(hasGoogleMaps ? 'GOOGLE_MAPS' : 'LEAFLET');
   const [googleMapType, setGoogleMapType] = useState<'roadmap' | 'satellite' | 'hybrid' | 'terrain'>('roadmap');
   const [showTraffic, setShowTraffic] = useState<boolean>(false);
   const [showCorridors, setShowCorridors] = useState<boolean>(true);
+  const [customApiKey, setCustomApiKey] = useState<string>('');
+  const [showKeyModal, setShowKeyModal] = useState<boolean>(false);
   
   const [selectedRiskFilter, setSelectedRiskFilter] = useState<string>('ALL');
   const [selectedStateFilter, setSelectedStateFilter] = useState<string>('ALL');
@@ -176,7 +179,7 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
     return () => {
       cleanupMaps();
     };
-  }, [mapProvider]);
+  }, [mapProvider, tileLayerType]);
 
   // Update Google Maps Type or Traffic Layer
   useEffect(() => {
@@ -302,7 +305,7 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
           googlePolylinesRef.current.push(polyline);
         }
       });
-    } else if (mapProvider === 'LEAFLET' && leafletMapRef.current) {
+    } else if (leafletMapRef.current) {
       // Leaflet render
       Object.values(leafletMarkersRef.current).forEach(m => m.remove());
       leafletMarkersRef.current = {};
