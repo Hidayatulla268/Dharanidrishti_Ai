@@ -79,11 +79,17 @@ export const CitizenLandInspectorView: React.FC<CitizenLandInspectorViewProps> =
         center: { lat: activeParcel.latitude, lng: activeParcel.longitude },
         zoom: 9,
         styles: [
-          { elementType: 'geometry', stylers: [{ color: '#172033' }] },
-          { elementType: 'labels.text.stroke', stylers: [{ color: '#172033' }] },
+          { elementType: 'geometry', stylers: [{ color: '#080c17' }] },
+          { elementType: 'labels.text.stroke', stylers: [{ color: '#080c17' }, { weight: 3 }] },
           { elementType: 'labels.text.fill', stylers: [{ color: '#94a3b8' }] },
-          { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#0284c7' }] },
-          { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#090d16' }] }
+          { featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{ color: '#1e293b' }] },
+          { featureType: 'administrative.country', elementType: 'geometry.stroke', stylers: [{ color: '#0284c7' }] },
+          { featureType: 'administrative.province', elementType: 'geometry.stroke', stylers: [{ color: '#38bdf8' }] },
+          { featureType: 'poi', stylers: [{ visibility: 'off' }] },
+          { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#0f172a' }] },
+          { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#0369a1' }] },
+          { featureType: 'road.highway', elementType: 'labels.text.fill', stylers: [{ color: '#e0f2fe' }] },
+          { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#040711' }] }
         ],
         zoomControl: true,
         streetViewControl: false,
@@ -210,7 +216,20 @@ export const CitizenLandInspectorView: React.FC<CitizenLandInspectorViewProps> =
       });
 
       const marker = L.marker([activeParcel.latitude, activeParcel.longitude], { icon: customIcon }).addTo(leafletMapRef.current);
-      marker.bindPopup(`<b>${activeParcel.khasraGatNumber}</b><br/>${activeParcel.village}, ${activeParcel.district}<br/>Owner: ${activeParcel.registeredOwnerName}`).openPopup();
+      const parcelPopup = `
+        <div style="padding: 10px; min-width: 240px; font-family: 'Inter', sans-serif;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+            <span style="font-family: monospace; font-size: 11px; color: #38bdf8; font-weight: 700;">${activeParcel.khasraGatNumber}</span>
+            <span style="background: ${pinColor}25; color: ${pinColor}; border: 1px solid ${pinColor}55; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 9999px;">
+              ${activeParcel.isUnderLitigation ? 'DISPUTED' : 'CLEAR TITLE'}
+            </span>
+          </div>
+          <div style="font-weight: 800; font-size: 13px; color: #ffffff; margin-bottom: 4px;">${activeParcel.village}, ${activeParcel.district}</div>
+          <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">Owner: <strong style="color: #f8fafc;">${activeParcel.registeredOwnerName}</strong></div>
+          <div style="font-size: 11px; color: #38bdf8; font-weight: 600;">Area: ${activeParcel.totalAreaAcre} Acres (${activeParcel.landClassification})</div>
+        </div>
+      `;
+      marker.bindPopup(parcelPopup).openPopup();
       leafletMarkerRef.current = marker;
       leafletMapRef.current.panTo([activeParcel.latitude, activeParcel.longitude]);
     }

@@ -70,11 +70,26 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
     return matchesRisk && matchesState;
   });
 
-  // Dark Style definition for Google Maps
+  // Ultra-detailed Command Center Dark Style for Google Maps
   const googleMapsDarkStyle = [
-    { elementType: 'geometry', stylers: [{ color: '#172033' }] },
-    { elementType: 'labels.text.stroke', stylers: [{ color: '#172033' }] },
+    { elementType: 'geometry', stylers: [{ color: '#080c17' }] },
+    { elementType: 'labels.text.stroke', stylers: [{ color: '#080c17' }, { weight: 3 }] },
     { elementType: 'labels.text.fill', stylers: [{ color: '#94a3b8' }] },
+    {
+      featureType: 'administrative',
+      elementType: 'geometry.stroke',
+      stylers: [{ color: '#1e293b' }, { weight: 1 }]
+    },
+    {
+      featureType: 'administrative.country',
+      elementType: 'geometry.stroke',
+      stylers: [{ color: '#0284c7' }, { weight: 1.5 }]
+    },
+    {
+      featureType: 'administrative.province',
+      elementType: 'geometry.stroke',
+      stylers: [{ color: '#38bdf8' }, { weight: 1 }]
+    },
     {
       featureType: 'administrative.locality',
       elementType: 'labels.text.fill',
@@ -82,28 +97,52 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
     },
     {
       featureType: 'poi',
-      elementType: 'labels.text.fill',
-      stylers: [{ color: '#64748b' }]
+      stylers: [{ visibility: 'off' }]
     },
     {
       featureType: 'poi.park',
       elementType: 'geometry',
-      stylers: [{ color: '#064e3b' }]
+      stylers: [{ color: '#06201b' }, { visibility: 'simplified' }]
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'labels.text.fill',
+      stylers: [{ color: '#34d399' }]
     },
     {
       featureType: 'road',
       elementType: 'geometry',
-      stylers: [{ color: '#1e293b' }]
+      stylers: [{ color: '#0f172a' }]
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [{ color: '#090d16' }]
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [{ color: '#64748b' }]
     },
     {
       featureType: 'road.highway',
       elementType: 'geometry',
-      stylers: [{ color: '#0284c7' }]
+      stylers: [{ color: '#0369a1' }]
     },
     {
       featureType: 'road.highway',
       elementType: 'geometry.stroke',
-      stylers: [{ color: '#0369a1' }]
+      stylers: [{ color: '#0c4a6e' }]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'labels.text.fill',
+      stylers: [{ color: '#e0f2fe' }]
+    },
+    {
+      featureType: 'road.arterial',
+      elementType: 'geometry',
+      stylers: [{ color: '#1e293b' }]
     },
     {
       featureType: 'transit',
@@ -111,9 +150,24 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
       stylers: [{ color: '#1e293b' }]
     },
     {
+      featureType: 'transit.station',
+      elementType: 'labels.text.fill',
+      stylers: [{ color: '#0284c7' }]
+    },
+    {
       featureType: 'water',
       elementType: 'geometry',
-      stylers: [{ color: '#090d16' }]
+      stylers: [{ color: '#040711' }]
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [{ color: '#0284c7' }]
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [{ color: '#040711' }]
     }
   ];
 
@@ -296,7 +350,7 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
         else if (p.riskCategory === 'HIGH') pinColor = '#f97316';
         else if (p.riskCategory === 'MEDIUM') pinColor = '#f59e0b';
 
-        // Google Marker
+        // Google Marker with High-Contrast Ring
         const marker = new window.google.maps.Marker({
           position: { lat: p.latitude, lng: p.longitude },
           map: googleMapRef.current,
@@ -304,10 +358,10 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
           icon: {
             path: window.google.maps.SymbolPath.CIRCLE,
             fillColor: pinColor,
-            fillOpacity: 0.95,
+            fillOpacity: 1,
             scale: 14,
-            strokeColor: '#ffffff',
-            strokeWeight: 2
+            strokeColor: '#080c17',
+            strokeWeight: 3
           },
           label: {
             text: `${p.riskScore}`,
@@ -321,34 +375,34 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
           onSelectProject(p);
 
           const contentString = `
-            <div style="padding: 12px; min-width: 260px; font-family: 'Inter', sans-serif; color: #0f172a;">
-              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px;">
-                <span style="font-family: monospace; font-size: 11px; color: #0284c7; font-weight: 700;">${p.code}</span>
-                <span style="background: ${pinColor}22; color: ${pinColor}; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 9999px;">
+            <div style="padding: 14px; min-width: 270px; font-family: 'Inter', sans-serif; background: #0b1220; color: #f8fafc; border-radius: 10px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px;">
+                <span style="font-family: monospace; font-size: 11px; color: #38bdf8; font-weight: 700; background: rgba(56, 189, 248, 0.12); padding: 2px 6px; border-radius: 4px;">${p.code}</span>
+                <span style="background: ${pinColor}25; color: ${pinColor}; border: 1px solid ${pinColor}55; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 9999px;">
                   ${p.riskCategory} (${p.riskScore}/100)
                 </span>
               </div>
-              <div style="font-weight: 800; font-size: 13px; margin-bottom: 4px;">${p.name}</div>
-              <div style="font-size: 11px; color: #64748b; margin-bottom: 8px;">${p.district}, ${p.state} • ${p.agency}</div>
+              <div style="font-weight: 800; font-size: 13px; margin-bottom: 4px; color: #ffffff;">${p.name}</div>
+              <div style="font-size: 11px; color: #94a3b8; margin-bottom: 10px;">${p.district}, ${p.state} • ${p.agency}</div>
 
-              <div style="background: #f8fafc; padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0; margin-bottom: 10px;">
-                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 2px;">
-                  <span style="color: #64748b;">Forecast Overrun:</span>
-                  <strong style="color: #dc2626;">+${p.predictedDelayMonths} Months</strong>
+              <div style="background: #0f172a; padding: 10px; border-radius: 8px; border: 1px solid rgba(148, 163, 184, 0.15); margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
+                  <span style="color: #94a3b8;">Forecast Delay:</span>
+                  <strong style="color: #f87171;">+${p.predictedDelayMonths} Months</strong>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 2px;">
-                  <span style="color: #64748b;">Disbursed:</span>
-                  <strong style="color: #16a34a;">${p.disbursementPercentage.toFixed(1)}%</strong>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
+                  <span style="color: #94a3b8;">Disbursed:</span>
+                  <strong style="color: #34d399;">${p.disbursementPercentage.toFixed(1)}%</strong>
                 </div>
                 <div style="display: flex; justify-content: space-between; font-size: 11px;">
-                  <span style="color: #64748b;">Litigations:</span>
-                  <strong>${p.pendingLitigationCases} active cases</strong>
+                  <span style="color: #94a3b8;">Litigations:</span>
+                  <strong style="color: #fbbf24;">${p.pendingLitigationCases} active cases</strong>
                 </div>
               </div>
 
               <button 
                 id="gmap-xai-btn-${p.id}"
-                style="width: 100%; padding: 7px 12px; background: #0284c7; border: none; border-radius: 6px; color: #ffffff; font-weight: 700; font-size: 11px; cursor: pointer;"
+                style="width: 100%; padding: 8px 12px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border: none; border-radius: 6px; color: #ffffff; font-weight: 700; font-size: 11px; cursor: pointer; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);"
               >
                 ⚡ Open in AI XAI Studio
               </button>
@@ -375,7 +429,7 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
             path: pathCoords,
             geodesic: true,
             strokeColor: pinColor,
-            strokeOpacity: 0.8,
+            strokeOpacity: 0.85,
             strokeWeight: 4
           });
           polyline.setMap(googleMapRef.current);
@@ -396,17 +450,47 @@ export const GISMapView: React.FC<GISMapViewProps> = ({
 
         const customIcon = L.divIcon({
           className: 'custom-leaflet-pin',
-          html: `<div style="width:30px;height:30px;background:${pinColor};border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:11px;box-shadow:0 0 12px ${pinColor};cursor:pointer;">${p.riskScore}</div>`,
-          iconSize: [30, 30],
-          iconAnchor: [15, 15]
+          html: `<div style="width:32px;height:32px;background:${pinColor};border:2.5px solid #080c17;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:11px;box-shadow:0 0 16px ${pinColor}, 0 0 0 2px rgba(255,255,255,0.25);cursor:pointer;animation: pinRadar 2.8s infinite;">${p.riskScore}</div>`,
+          iconSize: [32, 32],
+          iconAnchor: [16, 16]
         });
 
         const marker = L.marker([p.latitude, p.longitude], { icon: customIcon }).addTo(leafletMapRef.current!);
+        
+        const popupContent = `
+          <div style="padding: 8px; min-width: 250px; font-family: 'Inter', sans-serif;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px;">
+              <span style="font-family: monospace; font-size: 11px; color: #38bdf8; font-weight: 700;">${p.code}</span>
+              <span style="background: ${pinColor}25; color: ${pinColor}; border: 1px solid ${pinColor}55; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 9999px;">
+                ${p.riskCategory} (${p.riskScore}/100)
+              </span>
+            </div>
+            <div style="font-weight: 800; font-size: 13px; margin-bottom: 4px; color: #f8fafc;">${p.name}</div>
+            <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">${p.district}, ${p.state} • ${p.agency}</div>
+
+            <div style="background: #080c17; padding: 8px; border-radius: 6px; border: 1px solid rgba(148, 163, 184, 0.15); margin-bottom: 10px;">
+              <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px;">
+                <span style="color: #94a3b8;">Predicted Delay:</span>
+                <strong style="color: #f87171;">+${p.predictedDelayMonths} Months</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 11px;">
+                <span style="color: #94a3b8;">Disbursed:</span>
+                <strong style="color: #34d399;">${p.disbursementPercentage.toFixed(1)}%</strong>
+              </div>
+            </div>
+
+            <div style="font-size: 11px; color: #38bdf8; font-weight: 700; text-align: center; cursor: pointer;">
+              Click marker to select project ➔
+            </div>
+          </div>
+        `;
+        
+        marker.bindPopup(popupContent);
         marker.on('click', () => onSelectProject(p));
         leafletMarkersRef.current[p.id] = marker;
 
         if (showCorridors && p.corridorPath && leafletPolylineRef.current) {
-          L.polyline(p.corridorPath, { color: pinColor, weight: 4, opacity: 0.75, dashArray: '6, 6' }).addTo(leafletPolylineRef.current);
+          L.polyline(p.corridorPath, { color: pinColor, weight: 4, opacity: 0.85, dashArray: '6, 6' }).addTo(leafletPolylineRef.current);
         }
       });
     }
