@@ -467,6 +467,86 @@ def build_pdf(filename="DharaniDrishti_AI_Complete_Architecture_and_Engineering_
     story.append(comp_table)
     story.append(Spacer(1, 10))
 
+    # 3.1 Feature-by-Feature Difference Breakdown Table
+    story.append(Paragraph("3.1 Direct Feature-by-Feature Differences: Traditional Portals vs. DharaniDrishti AI", h2_style))
+    story.append(Paragraph(
+        "The following matrix summarizes the paradigm shift from legacy government record-keeping systems to the proactive, AI-driven decision physics of DharaniDrishti AI:",
+        body_style
+    ))
+
+    diff_table_data = [
+        [
+            Paragraph("Evaluation Dimension", table_header),
+            Paragraph("Traditional Systems (Bhoomi Rashi, PARIVESH, PRAGATI)", table_header),
+            Paragraph("DharaniDrishti AI Platform (First-of-its-Kind)", table_header)
+        ],
+        [
+            Paragraph("<b>1. Data Processing Paradigm</b>", table_cell_bold),
+            Paragraph("<b>Reactive & Retrospective:</b> Records milestones only after statutory gazettes or manual quarterly forms are entered. No forecasting.", table_cell),
+            Paragraph("<b>Autonomous & Predictive:</b> Runs sub-millisecond ensemble ML regression over 11 statutory vectors to forecast future milestone delays.", table_cell)
+        ],
+        [
+            Paragraph("<b>2. AI & Explainability</b>", table_cell_bold),
+            Paragraph("<b>Zero Machine Learning:</b> Uses static spreadsheet lookups and manual Red/Amber/Green RAG scorecards with no causal attribution.", table_cell),
+            Paragraph("<b>XGBoost + SHAP TreeExplainer:</b> Provides game-theoretic mathematical waterfall attributions showing exact positive and negative delay drivers.", table_cell)
+        ],
+        [
+            Paragraph("<b>3. What-If Scenario Sandbox</b>", table_cell_bold),
+            Paragraph("<b>Non-Existent:</b> Administrators cannot simulate policy interventions or quantify time/cost impacts before implementation.", table_cell),
+            Paragraph("<b>Live Physics Sliders:</b> Ministers can adjust disbursement velocity and Lok Adalat bench allocations to calculate exact months and ₹ Cr saved.", table_cell)
+        ],
+        [
+            Paragraph("<b>4. Inter-Agency Coordination</b>", table_cell_bold),
+            Paragraph("<b>Fragmented Silos:</b> Forest (PARIVESH), Highway (Bhoomi Rashi), Disbursal (PFMS), and Writs (e-Courts) operate as disconnected portals.", table_cell),
+            Paragraph("<b>Unified 6-Pillar GatiShakti Hub:</b> Cross-correlates clearances across 8 statutory ministries with automated SLA breach countdowns.", table_cell)
+        ],
+        [
+            Paragraph("<b>5. Early Warning Threat Detection</b>", table_cell_bold),
+            Paragraph("<b>Delayed Discovery:</b> Project bottlenecks are flagged 3 to 6 months after milestones have failed or costs have escalated.", table_cell),
+            Paragraph("<b>42-Day Advance Sentinel:</b> Real-time anomaly rules detect compensation and court stay lags 42+ days before physical milestone breach.", table_cell)
+        ],
+        [
+            Paragraph("<b>6. Prescriptive Mitigation</b>", table_cell_bold),
+            Paragraph("<b>Manual Bureaucratic Notes:</b> Relies on multi-departmental physical committee meetings and ad-hoc inter-ministerial circulars.", table_cell),
+            Paragraph("<b>Automated Statutory Playbooks:</b> Auto-drafts Section 19 fast-track declarations, 25% consent incentive bonuses, and Special Lok Adalat benches.", table_cell)
+        ],
+        [
+            Paragraph("<b>7. Citizen Landowner Transparency</b>", table_cell_bold),
+            Paragraph("<b>Opaque / Restricted Access:</b> Farmers must physically visit tehsil offices and patwaris to check compensation and mutation records.", table_cell),
+            Paragraph("<b>Public Citizen Land Inspector:</b> 100% transparent online verification by Gat/Khasra survey number, mutation tracking, and grievance filing.", table_cell)
+        ],
+        [
+            Paragraph("<b>8. Security & Audit Integrity</b>", table_cell_bold),
+            Paragraph("<b>Standard Relational DB Logs:</b> Vulnerable to manual SQL administrative overrides and unauthorized retroactive modifications.", table_cell),
+            Paragraph("<b>Cryptographic Blockchain Chaining:</b> Web Cryptography API (SHA-256) ensures tamper-evident audit trails for CAG compliance.", table_cell)
+        ],
+        [
+            Paragraph("<b>9. Geospatial Visualization</b>", table_cell_bold),
+            Paragraph("<b>Static Flat Maps:</b> Basic single-layer cadastral or schematic line drawings without multi-raster satellite telemetry.", table_cell),
+            Paragraph("<b>5-Mode Dual-Engine GIS:</b> Sub-second raster tile swapping (Vibrant, Satellite, Hybrid, Terrain, Cyber) with Google traffic overlays.", table_cell)
+        ],
+        [
+            Paragraph("<b>10. Project Acquisition Cycle</b>", table_cell_bold),
+            Paragraph("<b>34 Months Average:</b> Chronic litigation stays, forest NOC pendencies, and compensation disputes cause multi-year overruns.", table_cell),
+            Paragraph("<b>18 Months Target (~47% Faster):</b> Proactive bottleneck clearing protects public capital and accelerates national infrastructure delivery.", table_cell)
+        ]
+    ]
+
+    diff_table = Table(diff_table_data, colWidths=[105, 195, 204])
+    diff_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), NAVY),
+        ('BOX', (0, 0), (-1, -1), 0.5, BORDER_CLR),
+        ('INNERGRID', (0, 0), (-1, -1), 0.5, BORDER_CLR),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, SURFACE]),
+        ('TOPPADDING', (0, 0), (-1, -1), 3.5),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 3.5),
+        ('LEFTPADDING', (0, 0), (-1, -1), 5),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 5),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+    ]))
+    story.append(diff_table)
+    story.append(Spacer(1, 10))
+
     # =========================================================================
     # 5. TECHNOLOGIES USED & WHY THEY WERE CHOSEN
     # =========================================================================

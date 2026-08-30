@@ -220,6 +220,128 @@ export const SpecificationsView: React.FC = () => {
           </table>
         </div>
       </div>
+
+      {/* 3. Direct Differences Matrix: Traditional Portals vs DharaniDrishti AI */}
+      <div className="glass-panel" style={{ padding: '24px', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
+          <div>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
+              <Sparkles size={18} style={{ color: 'var(--accent-gold)' }} />
+              Direct Feature-by-Feature Differences: Traditional Portals vs. DharaniDrishti AI
+            </h3>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '4px', margin: 0 }}>
+              Paradigm shift from retrospective government record-keeping to autonomous AI decision intelligence.
+            </p>
+          </div>
+          <span style={{ fontSize: '0.72rem', background: 'rgba(14, 165, 233, 0.15)', color: '#38bdf8', border: '1px solid rgba(14, 165, 233, 0.3)', padding: '4px 10px', borderRadius: 'var(--radius-full)', fontWeight: 700 }}>
+            1st-of-its-Kind Innovation
+          </span>
+        </div>
+
+        <div className="custom-table-wrap">
+          <table className="custom-table">
+            <thead>
+              <tr>
+                <th style={{ width: '180px' }}>Evaluation Dimension</th>
+                <th style={{ width: '280px', color: '#ff6b6b' }}>Traditional Systems (Bhoomi Rashi, PARIVESH, PRAGATI)</th>
+                <th style={{ color: '#34d399' }}>DharaniDrishti AI Platform (Next-Gen)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={{ fontWeight: 800, color: 'var(--text-primary)' }}>1. Data Processing Paradigm</td>
+                <td style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>
+                  <strong>Reactive & Retrospective:</strong> Records milestones only after gazette or manual forms are submitted. Zero forward forecasting.
+                </td>
+                <td style={{ fontSize: '0.82rem', color: '#ffffff', background: 'rgba(16, 185, 129, 0.05)' }}>
+                  <strong style={{ color: '#34d399' }}>Autonomous & Predictive:</strong> Evaluates 11 statutory vectors via ensemble ML in sub-milliseconds to forecast future milestone delays.
+                </td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: 800, color: 'var(--text-primary)' }}>2. AI & Explainability (XAI)</td>
+                <td style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>
+                  <strong>Zero Machine Learning:</strong> Uses static spreadsheet lookups and manual Red/Amber/Green scorecards with no causal attribution.
+                </td>
+                <td style={{ fontSize: '0.82rem', color: '#ffffff', background: 'rgba(16, 185, 129, 0.05)' }}>
+                  <strong style={{ color: '#34d399' }}>XGBoost + SHAP TreeExplainer:</strong> Game-theoretic mathematical waterfall attributions showing exact positive and negative delay drivers.
+                </td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: 800, color: 'var(--text-primary)' }}>3. What-If Scenario Sandbox</td>
+                <td style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>
+                  <strong>Non-Existent:</strong> Administrators cannot simulate policy interventions or quantify time/cost impacts before implementation.
+                </td>
+                <td style={{ fontSize: '0.82rem', color: '#ffffff', background: 'rgba(16, 185, 129, 0.05)' }}>
+                  <strong style={{ color: '#34d399' }}>Live Physics Sliders:</strong> Move sliders to simulate disbursement velocity or Lok Adalat benches and instantly compute exact months and ₹ Cr saved.
+                </td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: 800, color: 'var(--text-primary)' }}>4. Inter-Agency Coordination</td>
+                <td style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>
+                  <strong>Fragmented Silos:</strong> Forest (PARIVESH), Highway (Bhoomi Rashi), Disbursal (PFMS), and Writs (e-Courts) operate as disconnected portals.
+                </td>
+                <td style={{ fontSize: '0.82rem', color: '#ffffff', background: 'rgba(16, 185, 129, 0.05)' }}>
+                  <strong style={{ color: '#34d399' }}>Unified 6-Pillar GatiShakti Hub:</strong> Cross-correlates clearances across 8 statutory ministries with automated SLA breach countdowns.
+                </td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: 800, color: 'var(--text-primary)' }}>5. Early Warning Sentinel</td>
+                <td style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>
+                  <strong>Delayed Discovery:</strong> Project bottlenecks are identified 3 to 6 months after milestones have failed or costs have escalated.
+                </td>
+                <td style={{ fontSize: '0.82rem', color: '#ffffff', background: 'rgba(16, 185, 129, 0.05)' }}>
+                  <strong style={{ color: '#34d399' }}>42-Day Advance Threat Sentinel:</strong> Real-time anomaly rules detect compensation and court stay lags 42+ days before physical milestone breach.
+                </td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: 800, color: 'var(--text-primary)' }}>6. Prescriptive Mitigation</td>
+                <td style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>
+                  <strong>Manual Bureaucratic Notes:</strong> Relies on multi-department physical meetings and ad-hoc circulars.
+                </td>
+                <td style={{ fontSize: '0.82rem', color: '#ffffff', background: 'rgba(16, 185, 129, 0.05)' }}>
+                  <strong style={{ color: '#34d399' }}>Automated Statutory Playbooks:</strong> Auto-drafts Section 19 fast-track declarations, 25% consent incentive bonuses, and Special Lok Adalat benches.
+                </td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: 800, color: 'var(--text-primary)' }}>7. Citizen Land Transparency</td>
+                <td style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>
+                  <strong>Opaque / Restricted Access:</strong> Farmers must physically visit tehsil offices and patwaris to check compensation and mutation records.
+                </td>
+                <td style={{ fontSize: '0.82rem', color: '#ffffff', background: 'rgba(16, 185, 129, 0.05)' }}>
+                  <strong style={{ color: '#34d399' }}>Public Citizen Land Inspector:</strong> 100% transparent online verification by Gat/Khasra survey number, mutation tracking, and grievance filing.
+                </td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: 800, color: 'var(--text-primary)' }}>8. Security & Audit Integrity</td>
+                <td style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>
+                  <strong>Standard Relational DB Logs:</strong> Vulnerable to manual SQL administrative overrides and unauthorized retroactive modifications.
+                </td>
+                <td style={{ fontSize: '0.82rem', color: '#ffffff', background: 'rgba(16, 185, 129, 0.05)' }}>
+                  <strong style={{ color: '#34d399' }}>Cryptographic Blockchain Chaining:</strong> Web Cryptography API (SHA-256) ensures tamper-evident audit trails for CAG compliance.
+                </td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: 800, color: 'var(--text-primary)' }}>9. Geospatial Visualization</td>
+                <td style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>
+                  <strong>Static Flat Maps:</strong> Basic single-layer cadastral or schematic line drawings without multi-raster satellite telemetry.
+                </td>
+                <td style={{ fontSize: '0.82rem', color: '#ffffff', background: 'rgba(16, 185, 129, 0.05)' }}>
+                  <strong style={{ color: '#34d399' }}>5-Mode Dual-Engine GIS:</strong> Sub-second raster tile swapping (Vibrant, Satellite, Hybrid, Terrain, Cyber) with Google traffic overlays.
+                </td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: 800, color: 'var(--text-primary)' }}>10. Project Acquisition Cycle</td>
+                <td style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>
+                  <strong>34 Months Average:</strong> Chronic litigation stays, forest NOC pendencies, and compensation disputes cause multi-year overruns.
+                </td>
+                <td style={{ fontSize: '0.82rem', color: '#ffffff', background: 'rgba(16, 185, 129, 0.05)' }}>
+                  <strong style={{ color: '#34d399' }}>18 Months Target (~47% Faster):</strong> Proactive bottleneck clearing protects public capital and accelerates national infrastructure delivery.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };
